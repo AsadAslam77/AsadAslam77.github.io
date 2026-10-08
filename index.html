@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Asad | Web and mobile developer</title>
+<meta name="description" content="Asad builds headless Shopify storefronts and React Native mobile apps.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F1F3EE; --ink:#16231F; --muted:#506059; --forest:#2D5A4A; --signal:#FF6B35; --line:#C9D1C8;
+  --display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --body:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--paper:#101A17;--ink:#E8EEE9;--muted:#9AABA3;--forest:#7FC4A8;--line:#2A3A34}
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.0625rem/1.6 var(--body)}
+a{color:inherit}
+a:focus-visible{outline:3px solid var(--signal);outline-offset:3px}
+.wrap{max-width:68rem;margin:0 auto;padding:0 1.5rem}
+header{padding:1.5rem 0;display:flex;justify-content:space-between;align-items:center}
+header a{text-decoration:none;font-weight:500}
+nav a{margin-left:1.5rem}
+nav a:hover{text-decoration:underline}
+.hero{padding:4rem 0 3rem}
+.hero h1{font:800 clamp(3.5rem,13vw,10rem)/.88 var(--display);letter-spacing:-.04em;margin:0}
+.hero p{max-width:34rem;margin:2rem 0 0;font-size:1.25rem;color:var(--muted)}
+.projects{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);margin-top:3rem}
+.project{padding:2rem 2rem 2.5rem 0;display:flex;flex-direction:column;gap:1rem}
+.project+.project{padding:2rem 0 2.5rem 2rem;border-left:2px solid var(--ink)}
+.kind{font-weight:500;color:var(--forest)}
+.project h2{font:800 clamp(2.25rem,5vw,3.75rem)/1 var(--display);letter-spacing:-.03em;margin:0}
+.project p{margin:0;max-width:26rem}
+.stack{list-style:none;margin:auto 0 0;padding:0;display:flex;flex-wrap:wrap;gap:.5rem}
+.stack li{border:1.5px solid var(--ink);border-radius:999px;padding:.15rem .8rem;font-size:.95rem}
+section.contact{padding:4rem 0 5rem}
+.contact h2{font:800 clamp(2rem,5vw,3.25rem)/1.05 var(--display);letter-spacing:-.03em;margin:0 0 1rem}
+.contact ul{list-style:none;padding:0;margin:1.5rem 0 0;display:flex;flex-wrap:wrap;gap:1.5rem}
+.contact a{font-weight:500;text-decoration-color:var(--signal);text-decoration-thickness:3px;text-underline-offset:5px}
+.contact a:hover{color:var(--signal)}
+footer{border-top:1px solid var(--line);padding:1.5rem 0;color:var(--muted);font-size:.95rem}
+@media (max-width:720px){
+  .projects{grid-template-columns:1fr}
+  .project,.project+.project{padding:1.75rem 0 2rem;border-left:0}
+  .project+.project{border-top:2px solid var(--ink)}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a href="#top">asaddev.me</a>
+    <nav><a href="#work">Work</a><a href="#contact">Contact</a></nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <h1>Asad</h1>
+      <p>I'm a developer who builds online stores and mobile apps, from the storefront a customer sees to the data behind it.</p>
+    </section>
+
+    <section id="work" class="projects" aria-label="Selected work">
+      <article class="project">
+        <span class="kind">Web storefront</span>
+        <h2>Wajood</h2>
+        <p>A headless online store for a clothing brand selling t-shirts and hoodies, built on Shopify Hydrogen.</p>
+        <ul class="stack"><li>Shopify</li><li>Hydrogen</li><li>React</li></ul>
+      </article>
+      <article class="project">
+        <span class="kind">Mobile app</span>
+        <h2>PetNove</h2>
+        <p>A pet care app for iOS and Android, built with Expo React Native and Firebase.</p>
+        <ul class="stack"><li>Expo</li><li>React Native</li><li>Firebase</li></ul>
+      </article>
+    </section>
+
+    <section id="contact" class="contact">
+      <h2>I'm open to developer roles.</h2>
+      <p>Send me a message about a role, a project, or a team that needs a web or mobile developer.</p>
+      <ul>
+        <li><a href="mailto:aasadasl77@gmail.com">aasadasl77@gmail.com</a></li>
+        <li><a href="https://github.com/AsadAslam77">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/asad-dev/">LinkedIn</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>&copy; 2026 Asad</footer>
+</div>
+</body>
+</html>
