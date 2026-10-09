@@ -136,3 +136,59 @@ body text Geist with no class anywhere on the page.
 next/font fetches from Google while building. GitHub Actions runners have
 internet so the deploy works, but a Google Fonts outage would fail a build.
 `next/font/local` with the files committed to the repo would remove that.
+
+## Task 4: theme toggle
+
+**Client components.** `components/ThemeToggle.tsx` — `"use client"` at the top
+of a file means its JavaScript is sent to the browser as well as being
+rendered to HTML at build time. Only components that need to respond to the
+user need it: a server component cannot have an `onClick` at all.
+
+**Correction: React is already in the bundle.** Measured, not assumed. Before
+this task the page transferred 456,270 bytes of JavaScript with no client
+component of ours at all; after adding next-themes and the toggle it was
+460,875 bytes. The real cost of this task was **4,605 bytes**, not the ~40KB
+"React runtime" figure quoted while planning. That figure was wrong for this
+project: Next.js ships React and its App Router runtime for every page
+regardless, so the first client component does not introduce React. What a
+client component actually adds is its own code plus any library it imports.
+(Those numbers are uncompressed; gzipped, the whole JS payload is about
+176KB, which is closer to what a real host sends.)
+
+**Hydration.** `app/layout.tsx` — the browser receives finished HTML, then
+React runs over it and attaches event handlers. If what React renders on the
+first pass disagrees with the HTML it was given, that is a hydration
+mismatch.
+
+**Why the theme causes a mismatch, and `suppressHydrationWarning`.**
+`app/layout.tsx` — next-themes injects a small script that runs before the
+first paint and sets `class="dark"` on `<html>`. That is what prevents a
+flash of the wrong theme, but it also means the DOM no longer matches the
+build-time HTML. `suppressHydrationWarning` on `<html>` tells React to accept
+a difference on that one element.
+
+**The icon needs its own guard.** `components/ThemeToggle.tsx` — at build
+time there is no browser, so the correct icon is unknowable. The component
+renders no icon until it knows it is running in the browser, so the server
+HTML and the first client render agree.
+
+**`useSyncExternalStore` instead of `useState` + `useEffect`.**
+`components/ThemeToggle.tsx` — the usual "mounted" trick sets state inside an
+effect, which `npm run lint` rejects because it causes a second render pass
+immediately after the first. `useSyncExternalStore` takes a separate server
+snapshot and client snapshot, giving the same answer with no effect at all.
+
+**`resolvedTheme` vs `theme`.** `components/ThemeToggle.tsx` — with
+`defaultTheme="system"`, `theme` is the literal string `"system"`.
+`resolvedTheme` is the `"dark"` or `"light"` it actually worked out to, which
+is what the icon and the label need.
+
+**An `aria-label` has to tell the truth in both states.**
+`components/ThemeToggle.tsx` — the label says "Switch to light mode" only
+while dark is active, and flips when the theme does. The icons are
+`aria-hidden` because the label already describes the button.
+
+**How the choice is remembered.** next-themes writes `localStorage.theme`.
+The pre-paint script reads it on the next visit, so an explicit choice beats
+the system setting. Verified: with the system set to dark and light chosen,
+a reload still shows light.

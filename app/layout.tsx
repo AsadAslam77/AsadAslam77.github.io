@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Geist } from "next/font/google";
 import Background from "@/components/Background";
+import { Providers } from "./providers";
 import "./globals.css";
 
 /**
@@ -39,10 +40,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       // variable. Putting both on <html> makes --font-space-grotesk and
       // --font-geist available to every element on the page.
       className={`${spaceGrotesk.variable} ${geist.variable} h-full antialiased`}
+      // next-themes sets the theme class on <html> from an inline script that
+      // runs before first paint, so the DOM differs from the server HTML on
+      // this one element. This tells React to allow that here and only here.
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        <Background />
-        {children}
+        <Providers>
+          <Background />
+          {children}
+        </Providers>
       </body>
     </html>
   );

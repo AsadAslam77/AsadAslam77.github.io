@@ -6,6 +6,8 @@
  * this file with the real page and Header.
  */
 
+import ThemeToggle from "@/components/ThemeToggle";
+
 const colourTokens = [
   { name: "bg", varName: "--bg" },
   { name: "text", varName: "--text" },
@@ -24,6 +26,11 @@ const colourTokens = [
 export default function Home() {
   return (
     <main className="mx-auto w-full max-w-[1120px] px-5 py-12 lg:px-12">
+      {/* Temporary home for the toggle; task 6 moves it into the Header. */}
+      <div className="mb-6 flex justify-end">
+        <ThemeToggle />
+      </div>
+
       <h1 className="text-section font-medium">Design tokens</h1>
       <p className="mt-2 text-muted">
         Temporary swatch page. Task 6 replaces it with the real page.

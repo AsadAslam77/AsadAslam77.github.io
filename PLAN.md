@@ -42,7 +42,7 @@ Every task that runs a build checks that `out/CNAME` exists and reads
       the fluid type scale, in `app/globals.css`.
 - [x] **3. Fonts.** Space Grotesk for headings and Geist for body through
       `next/font`.
-- [ ] **4. Theme toggle.** `next-themes` and a `ThemeToggle` that follows the
+- [x] **4. Theme toggle.** `next-themes` and a `ThemeToggle` that follows the
       system setting by default, remembers a choice and does not flash on load.
 - [ ] **5. Content data and GlassCard.** `lib/content.ts` with the copy from
       `content.md` as typed data, and a reusable `GlassCard` panel.
