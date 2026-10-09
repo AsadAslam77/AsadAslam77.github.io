@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Geist } from "next/font/google";
 import Background from "@/components/Background";
+import Header from "@/components/Header";
+import SkipLink from "@/components/SkipLink";
 import { Providers } from "./providers";
 import "./globals.css";
 
@@ -47,8 +49,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <Providers>
+          {/* First in the DOM, so it is the first stop in the tab order. */}
+          <SkipLink />
           <Background />
-          {children}
+          <Header />
+          {/* tabIndex={-1} makes <main> focusable by script but not by
+              tabbing. Without it the skip link only scrolls the page in some
+              browsers, leaving focus behind in the header. */}
+          <main id="main" tabIndex={-1} className="flex-1">
+            {children}
+          </main>
         </Providers>
       </body>
     </html>

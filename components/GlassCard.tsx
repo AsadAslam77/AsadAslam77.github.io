@@ -14,7 +14,9 @@ type GlassTag = "div" | "article" | "aside" | "section" | "li" | "header";
 /** panel 32px, card 24px, inner 14px, pill 999px (see CLAUDE.md). */
 type Radius = "panel" | "card" | "inner" | "pill";
 
-type Fill = "glass" | "strong";
+/** "solid" is for panels that overlay moving content, such as the mobile
+ *  menu: the translucent fills let whatever is behind read through them. */
+type Fill = "glass" | "strong" | "solid";
 
 /**
  * The classes are written out in full rather than built up as
@@ -31,6 +33,7 @@ const radii: Record<Radius, string> = {
 const fills: Record<Fill, string> = {
   glass: "glass",
   strong: "glass-strong",
+  solid: "glass-solid",
 };
 
 type GlassCardProps = {
@@ -38,6 +41,9 @@ type GlassCardProps = {
   radius?: Radius;
   fill?: Fill;
   className?: string;
+  /** Needed where something points at the panel: an anchor target, or a
+   *  button's aria-controls. */
+  id?: string;
   children?: ReactNode;
 };
 
@@ -46,11 +52,16 @@ export default function GlassCard({
   radius = "card",
   fill = "glass",
   className,
+  id,
   children,
 }: GlassCardProps) {
   const classes = [fills[fill], radii[radius], className]
     .filter(Boolean)
     .join(" ");
 
-  return <Tag className={classes}>{children}</Tag>;
+  return (
+    <Tag id={id} className={classes}>
+      {children}
+    </Tag>
+  );
 }

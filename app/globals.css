@@ -135,6 +135,21 @@ html {
   -webkit-backdrop-filter: blur(18px) saturate(150%);
 }
 
+/* An overlay panel sits over content that moves behind it, so a translucent
+   fill is not good enough: at 12% white in dark mode a heading underneath
+   reads straight through the panel and lands on top of the menu text, which
+   fails the 4.5:1 contrast rule. This fill is all but opaque, and keeps the
+   border, shadow and blur so it still belongs to the glass family.
+   The first background is the fallback for browsers without color-mix. */
+.glass-solid {
+  background: var(--bg);
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 32px var(--shadow);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+}
+
 /* Without blur, translucent panels sitting over a coloured blob become hard
    to read, so the fill becomes more opaque instead. */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
@@ -149,7 +164,8 @@ html {
 /* Blur is expensive for a phone GPU to composite, so phones get less of it. */
 @media (max-width: 767px) {
   .glass,
-  .glass-strong {
+  .glass-strong,
+  .glass-solid {
     backdrop-filter: blur(12px) saturate(150%);
     -webkit-backdrop-filter: blur(12px) saturate(150%);
   }

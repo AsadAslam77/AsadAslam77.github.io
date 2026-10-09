@@ -46,7 +46,7 @@ Every task that runs a build checks that `out/CNAME` exists and reads
       system setting by default, remembers a choice and does not flash on load.
 - [x] **5. Content data and GlassCard.** `lib/content.ts` with the copy from
       `content.md` as typed data, and a reusable `GlassCard` panel.
-- [ ] **6. Header.** A floating glass bar on desktop. On phones the logo, the
+- [x] **6. Header.** A floating glass bar on desktop. On phones the logo, the
       theme toggle and a menu button that opens a glass panel. Esc closes it,
       focus is visible and returns to the button.
 - [ ] **7. Hero.** The name, the role line, the availability line, two buttons

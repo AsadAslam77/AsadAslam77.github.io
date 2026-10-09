@@ -220,3 +220,29 @@ a reload still shows light.
 **A component can choose its own HTML element.** `components/GlassCard.tsx` — the `as` prop is renamed to `Tag` while destructuring, and a capitalised variable in JSX is treated as a component or element name. That is how one panel can render as an `<article>` in the work grid and an `<li>` inside a list, so the markup stays meaningful without duplicating the component.
 
 **Union props beat a free-form string.** `components/GlassCard.tsx` — `radius?: "panel" | "card" | "inner" | "pill"` means a typo is a build error and the editor offers the four choices. `radius?: string` would accept `"panle"` silently.
+
+## Task 6: the Header
+
+**The server/client boundary is per component, not per tree.** `components/Header.tsx` — `Header` has no `"use client"` and still renders `ThemeToggle` and `MobileMenu`, which do. A server component can render a client component as a child; what it cannot do is hold state or pass a function as a prop across the boundary. So the header is inert HTML with two small interactive islands inside it, and on a desktop the four nav links ship no JavaScript at all. Putting `useState` in `Header` instead would have pulled everything it renders into the browser bundle for no gain.
+
+**A disclosure is not a dialog.** `components/MobileMenu.tsx` — a dialog covers the page and traps focus, so Tab cannot escape it. This menu is a disclosure: a button that shows a panel. It gets `aria-expanded` and `aria-controls`, but no focus trap, no `aria-modal` and nothing made `inert`, and tabbing past the last link carries on down the page. Trapping focus in something that is not modal is a common mistake and is genuinely unpleasant to use.
+
+**`aria-expanded` and `aria-controls`.** `components/MobileMenu.tsx` — `aria-expanded` is read aloud as "collapsed" or "expanded", so a screen reader user knows what the button did without seeing it. `aria-controls` names the element the button owns. Both have to be on the *button*, not the panel.
+
+**Focus has to be put back by hand.** `components/MobileMenu.tsx` — when Esc removes the panel, the element focus was sitting on no longer exists, and the browser's fallback is to drop focus on `<body>`. For a keyboard user that means the next Tab starts from the top of the page. Calling `buttonRef.current?.focus()` as part of closing is what keeps their place.
+
+**`pointerdown` rather than `click` for outside-click.** `components/MobileMenu.tsx` — `pointerdown` fires before focus moves, so the panel is already closing by the time the clicked element takes focus. Listening for `click` leaves a frame where both have happened in the wrong order.
+
+**Listeners are added only while open, and removed on cleanup.** `components/MobileMenu.tsx` — the effect returns a function that removes both listeners. Without it every open would add another pair and they would pile up, each one still firing.
+
+**`scroll-margin-top`.** `app/page.tsx` — a sticky header covers the top of whatever an anchor link jumps to. `scroll-margin-top` tells the browser to stop that much short. It affects only where scrolling stops; it changes no layout, so it is harmless even if the header stops being sticky. Measured: the `#work` heading lands at 168px with the header ending at 94px.
+
+**`tabIndex={-1}` makes an element focusable by script only.** `app/layout.tsx` — a `<main>` is not focusable, so in some browsers "Skip to content" scrolls the page but leaves focus behind in the header, and the next Tab goes back into the nav. `-1` lets focus land there without adding `<main>` to the tab order.
+
+**`sr-only` keeps something in the tab order while hiding it.** `components/SkipLink.tsx` — `display: none` would remove it from the accessibility tree and the tab order entirely. `sr-only` clips it to a 1px box instead, so it is invisible but still reachable, and `focus:not-sr-only` brings it back the moment it is focused.
+
+**Translucent is wrong for an overlay.** `app/globals.css` — the menu panel first used `glass-strong`, which is 12% white in dark mode. Over moving page content the heading behind it read straight through and collided with the menu text. The new `.glass-solid` is 94% opaque and keeps the border, shadow and blur. Glass works when what is behind it is decoration; it fails when what is behind it is text.
+
+**`color-mix()` with a plain fallback.** `app/globals.css` — the rule sets `background` twice. An old browser does not understand the second declaration and keeps the first; a current one takes the second. That is the whole CSS fallback mechanism: a browser discards declarations it cannot parse.
+
+**A fixed background and a sticky header do not fight.** `components/Header.tsx` — verified by `document.elementFromPoint` rather than by eye: inside the pill the topmost element is the pill, in the gap above it the header itself. `position: sticky` would break if any ancestor had `overflow: hidden`, which is worth remembering before wrapping the page in one.
