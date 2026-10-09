@@ -1,3 +1,4 @@
+import Button from "./Button";
 import GlassCard from "./GlassCard";
 import MobileMenu from "./MobileMenu";
 import ThemeToggle from "./ThemeToggle";
@@ -46,12 +47,9 @@ export default function Header() {
 
           <div className="flex items-center gap-3">
             <ThemeToggle />
-            <a
-              href={header.cta.href}
-              className="hidden min-h-11 items-center rounded-[999px] bg-accent px-6 font-medium text-on-accent lg:inline-flex"
-            >
+            <Button href={header.cta.href} className="hidden lg:inline-flex">
               {header.cta.label}
-            </a>
+            </Button>
             <MobileMenu />
           </div>
         </GlassCard>

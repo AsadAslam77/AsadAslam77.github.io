@@ -11,6 +11,7 @@
  */
 
 import GlassCard from "@/components/GlassCard";
+import Hero from "@/components/Hero";
 import { contact, processHeading, workHeading } from "@/lib/content";
 
 /**
@@ -20,8 +21,8 @@ import { contact, processHeading, workHeading } from "@/lib/content";
  */
 const SECTION = "scroll-mt-[104px] lg:scroll-mt-[120px] py-16 lg:py-24";
 
+/* Hero is built; the rest are still stubs. */
 const sections = [
-  { id: "hero", heading: "Hero", task: "Task 7" },
   { id: "statement", heading: "Statement", task: "Task 8" },
   { id: "work", heading: workHeading, task: "Task 9" },
   { id: "services", heading: "Services", task: "Task 10" },
@@ -34,6 +35,8 @@ const sections = [
 export default function Home() {
   return (
     <div className="mx-auto w-full max-w-[1120px] px-5 lg:px-12">
+      <Hero />
+
       {sections.map((section) => (
         <section key={section.id} id={section.id} className={SECTION}>
           <h2 className="text-section font-bold tracking-[-0.02em]">

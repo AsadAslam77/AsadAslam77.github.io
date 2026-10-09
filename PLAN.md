@@ -49,7 +49,7 @@ Every task that runs a build checks that `out/CNAME` exists and reads
 - [x] **6. Header.** A floating glass bar on desktop. On phones the logo, the
       theme toggle and a menu button that opens a glass panel. Esc closes it,
       focus is visible and returns to the button.
-- [ ] **7. Hero.** The name, the role line, the availability line, two buttons
+- [x] **7. Hero.** The name, the role line, the availability line, two buttons
       and the glass profile card. One column, two columns from `lg`.
 - [ ] **8. Statement.** The statement line, the support line and the chips.
 - [ ] **9. Work.** Three project cards with screenshot slots. Filter tabs in

@@ -290,3 +290,21 @@ a reload still shows light.
 **A `--blob-scale` variable keeps one rule serving two themes.** `app/globals.css` — `width: calc(var(--blob-size) * var(--blob-scale))` means the responsive sizes stay in one place and the theme only adjusts a multiplier, instead of duplicating three breakpoints per theme.
 
 **Softening a background is contrast-positive, which is worth knowing before measuring.** `app/globals.css` — in dark mode every text token is light, so anything that lowers the background can only raise contrast. The check still has to be re-run, but the direction is known in advance: dark `muted` went from 3.87:1 to 4.74:1 and cleared `glass-strong`, which had been the one failing pair in the whole palette.
+
+## Task 7: the Hero
+
+**One `<h1>` per page.** `components/Hero.tsx` — the name is the page's only `h1`, and every section heading is an `h2`. Screen reader users navigate by heading level, so a page with several `h1`s has no single answer to "what is this page about", and a page with none has no starting point. Checked in the built HTML: 1 and 7.
+
+**A link that looks like a button is still a link.** `components/Button.tsx` — the component always renders `<a>`, never `<button>`. A screen reader announces the two differently ("link" versus "button"), and only a real link gives middle-click, open-in-new-tab and the target shown in the status bar. The rule is about what it *does*, not what it looks like: navigates means link, acts on this page means button.
+
+**The same component can be server or client depending on who imports it.** `components/Button.tsx` — it has no `"use client"`, so in `Header` and `Hero` it is server-rendered and ships nothing. `MobileMenu` is a client component, and anything a client component imports is bundled into the client too, so the same file ends up in the browser there. No change needed, and nothing to configure: the boundary follows the import.
+
+**Decorative elements get `aria-hidden`.** `components/Hero.tsx` — the green dot beside the availability line is a styled `<span>` with no text. The sentence already says the thing; announcing an empty element would just add noise.
+
+**`resolve()` forced the placeholder to exist.** `components/Hero.tsx` — because `hero.card.photo` is `Unresolved<string>`, `resolve()` returns `string | null` and TypeScript will not let the null case be skipped. That is the task-5 design paying off: the dashed "[Your photo]" slot is not something to remember to build, it is the only way the file compiles.
+
+**Reserve the space an image will take.** `components/Hero.tsx` — `next/image` with `width` and `height` writes those numbers into the HTML, so the browser leaves a 132×132 hole before the file arrives and nothing jumps when it does. Measured with a real 600×600 photo swapped in: section height, card height, the name's position and the whole page height were identical to the placeholder, to the pixel.
+
+**`clamp()` for sizes the type scale does not cover.** `components/Hero.tsx` — the mockup's 26px role line and 20px intro are desktop measurements. `clamp(20px, 3vw, 26px)` keeps the desktop figure as the maximum while letting the phone have something sensible, without adding two more tokens for two one-off sizes.
+
+**Spacing belongs to the parent, not the child.** `components/Chip.tsx` — `Chip` sets no margin and no gap, so the hero can lay chips out with an 8px gap and the statement section with 12px, using the same component. A chip that carried its own margin would fight every layout it was put in.

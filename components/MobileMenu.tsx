@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Button from "./Button";
 import GlassCard from "./GlassCard";
 import { header, nav } from "@/lib/content";
 
@@ -106,13 +107,9 @@ export default function MobileMenu() {
               ))}
             </ul>
           </nav>
-          <a
-            href={header.cta.href}
-            onClick={() => setOpen(false)}
-            className="mt-2 flex min-h-11 items-center justify-center rounded-[999px] bg-accent px-6 font-medium text-on-accent"
-          >
+          <Button href={header.cta.href} className="mt-2 flex w-full">
             {header.cta.label}
-          </a>
+          </Button>
         </GlassCard>
       )}
     </div>
