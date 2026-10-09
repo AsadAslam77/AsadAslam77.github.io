@@ -42,22 +42,41 @@ Tokens (CSS variables, light on `:root`, dark on `.dark`):
 |---|---|---|
 | bg | #06100D | #F2F7F4 |
 | text | #F4FBF7 | #08150F |
-| muted | #9DB0A6 | #4B5F55 |
+| muted | #BAC7C0 | #4B5F55 |
 | accent (fills) | #34D399 | #10B981 |
-| accent-text | #6EE7B7 | #047857 |
+| accent-text | #78E9BC | #046A4D |
 | warm (fills) | #FBBF24 | #F59E0B |
-| warm-text | #FCD34D | #B45309 |
+| warm-text | #FCD34D | #964508 |
 | glass | rgba(255,255,255,0.06) | rgba(255,255,255,0.55) |
 | glass-strong | rgba(255,255,255,0.12) | rgba(255,255,255,0.8) |
+| glass-solid (overlay panels) | 94% bg | 94% bg |
 | border | rgba(255,255,255,0.14) | rgba(255,255,255,0.9) |
 | shadow | rgba(0,0,0,0.35) | rgba(6,78,59,0.14) |
 | on-accent (text on accent fills) | #06100D | #08150F |
 
-- Glass panel: translucent fill, 1px border, soft shadow, `backdrop-filter: blur(18px) saturate(150%)`. Add an `@supports not (backdrop-filter: blur(1px))` fallback with a more opaque fill.
+- Glass panel: translucent fill, 1px border, soft shadow, `backdrop-filter: blur(18px) saturate(150%)`. Add an `@supports not (backdrop-filter: blur(1px))` fallback with a more opaque fill. **Never hand-write `-webkit-backdrop-filter`**: Lightning CSS treats the hand-written prefix as authoritative and drops the standard declaration from the build, and Chrome does not support the prefixed form, so nothing frosts. Write the standard property only and let the build add prefixes.
+- A panel that overlays moving content (the mobile menu) uses `glass-solid`, not `glass-strong`. A 12% white wash lets the text behind it read straight through.
 - Radii: large panels 24 to 32px, pills 999px, inner images 14px.
-- Background: a few large blobs (emerald and amber) behind the content, drawn as `radial-gradient(circle, colour 0%, transparent 70%)` rather than `filter: blur`, so the GPU has no blur pass to run. Dark: rgba(16,185,129,0.24) and rgba(251,191,36,0.20). Light: rgba(16,185,129,0.18) and rgba(245,158,11,0.25). The emerald values are capped by contrast: a glass panel over an emerald blob must still clear 4.5:1 for `muted` text in dark and `warm-text` in light.
+- Background: five large glows (emerald and amber) behind the content, drawn as a three-stop `radial-gradient` rather than `filter: blur`, so the GPU has no blur pass to run. The mockup values: dark rgba(16,185,129,0.38) and rgba(251,191,36,0.20); light rgba(16,185,129,0.30) and rgba(245,158,11,0.25).
+- The glows sit on a layer that is `absolute` over the whole document, not `fixed` to the viewport, so they scroll with the content and a new one comes into view every so often, as the mockups do. Vertical centres at -3%, 8%, 33%, 60% and 82% of page height (plus 340px, half the mockup's 680px box, because each glow is placed by its centre), alternating left, right, left, right, left. Sizes 420px, 680px from `md`, 940px from `lg` — the step at `md` exists because that is where the page is shortest, so the glows overlap most.
+
 - Accessibility: visible focus styles, 44px touch targets, text contrast of at least 4.5:1, respect `prefers-reduced-motion` (`MotionConfig reducedMotion="user"`).
 - Motion: one staggered hero entrance, a subtle hover on project cards, `whileInView` reveals in the work section only. Animate only opacity and transform.
+
+### Contrast
+
+Measured, not estimated: screenshot the page with the content hidden, take the most extreme background pixel anywhere on the page at 360, 768, 1024 and 1440, composite each glass fill over it, then compute WCAG 2.1 contrast. The worst case is always a glow centre at full strength, under a panel in dark and bare in light.
+
+| token | dark on plain bg | dark worst case | light on plain bg | light worst case |
+|---|---|---|---|---|
+| text | 18.38 | 6.44 | 17.24 | 13.16 |
+| muted | 11.05 | 3.87 (see below) | 6.32 | 4.82 |
+| accent-text | 13.04 | 4.57 | 6.11 | 4.66 |
+| warm-text | 13.39 | 4.69 | 6.15 | 4.69 |
+
+The one number below 4.5:1 is `muted` in dark over a `glass-strong` chip. On bare background and on `.glass` it is 4.62:1. So: **on `glass-strong` chips use `text`, never `muted`.** Pushing `muted` up to #CDD6D1 would clear it everywhere but leaves it 1.41:1 from body text, which is not a usable hierarchy.
+
+**Do not change the glow opacities, the glow sizes, or any text token without re-running the contrast check.** They are coupled: the opacities set how bright the background can get, the sizes set how much the glows overlap, and the text tokens are tuned against the result.
 
 ## Structure
 - `app/layout.tsx`, `app/page.tsx`

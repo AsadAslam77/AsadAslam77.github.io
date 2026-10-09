@@ -12,9 +12,9 @@
   --text: #08150f;
   --muted: #4b5f55;
   --accent: #10b981;
-  --accent-text: #047857;
+  --accent-text: #046a4d;
   --warm: #f59e0b;
-  --warm-text: #b45309;
+  --warm-text: #964508;
   --glass: rgba(255, 255, 255, 0.55);
   --glass-strong: rgba(255, 255, 255, 0.8);
   --border: rgba(255, 255, 255, 0.9);
@@ -22,7 +22,7 @@
   --on-accent: #08150f;
 
   /* Decorative background blobs. */
-  --blob-accent: rgba(16, 185, 129, 0.18);
+  --blob-accent: rgba(16, 185, 129, 0.3);
   --blob-warm: rgba(245, 158, 11, 0.25);
 
   /* Fluid type. clamp(min, preferred, max): the browser uses the middle
@@ -37,9 +37,9 @@
 .dark {
   --bg: #06100d;
   --text: #f4fbf7;
-  --muted: #9db0a6;
+  --muted: #bac7c0;
   --accent: #34d399;
-  --accent-text: #6ee7b7;
+  --accent-text: #78e9bc;
   --warm: #fbbf24;
   --warm-text: #fcd34d;
   --glass: rgba(255, 255, 255, 0.06);
@@ -48,7 +48,7 @@
   --shadow: rgba(0, 0, 0, 0.35);
   --on-accent: #06100d;
 
-  --blob-accent: rgba(16, 185, 129, 0.24);
+  --blob-accent: rgba(16, 185, 129, 0.38);
   --blob-warm: rgba(251, 191, 36, 0.2);
 }
 
@@ -182,23 +182,127 @@ html {
 
 .blob {
   position: absolute;
-  width: 360px;
-  height: 360px;
+  width: var(--blob-size);
+  height: var(--blob-size);
   border-radius: 50%;
+  /* Placed by its centre, so changing the size never moves it. */
+  transform: translate(-50%, -50%);
 }
 
+/* The mockup draws a 680px circle and blurs it by 130px: full strength in
+   the middle, soft to about 470px out. A blur's falloff is an S-curve, so a
+   plain two-stop gradient keeps too much colour at middle distances and the
+   amber creeps toward the centre of the screen, where it turns the emerald
+   olive. The middle stop approximates the shoulder of that curve.
+   A gradient costs the compositor nothing per frame; a real blur pass over a
+   940px surface would. */
 .blob-accent {
-  background: radial-gradient(circle, var(--blob-accent) 0%, transparent 70%);
+  background: radial-gradient(
+    circle closest-side,
+    var(--blob-accent) 0%,
+    var(--blob-accent) 30%,
+    color-mix(in srgb, var(--blob-accent) 45%, transparent) 58%,
+    transparent 100%
+  );
 }
 
 .blob-warm {
-  background: radial-gradient(circle, var(--blob-warm) 0%, transparent 70%);
+  background: radial-gradient(
+    circle closest-side,
+    var(--blob-warm) 0%,
+    var(--blob-warm) 30%,
+    color-mix(in srgb, var(--blob-warm) 45%, transparent) 58%,
+    transparent 100%
+  );
 }
 
+/* Placement.
+
+   The mockups scatter five glows down the whole page and let them scroll with
+   the content, so a new one comes into view every so often. The container is
+   therefore absolutely positioned over the whole document, not fixed to the
+   viewport: fixed meant one emerald and one amber for the entire scroll, no
+   matter how long the page got.
+
+   The vertical positions are percentages of the page height, so they stay
+   spread out however many sections the page ends up with. The mockup's own
+   figures are page-absolute pixels against a roughly 4500px page:
+
+     emerald  -120px  ->  -3%
+     amber     380px  ->   8%
+     emerald  1500px  ->  33%
+     amber    2700px  ->  60%
+     emerald  3700px  ->  82%
+
+   Each blob is placed by its centre, and the mockup's numbers are the top
+   edge of a 680px box, so the +340px in each calc() is half that box. Doing
+   it this way means the size can change without moving anything. */
+
+:root {
+  --blob-size: 420px;
+}
+
+.blob-1 {
+  top: calc(-3% + 340px);
+  left: 15%;
+}
+
+.blob-2 {
+  top: calc(8% + 340px);
+  left: 90%;
+}
+
+.blob-3 {
+  top: calc(33% + 340px);
+  left: 10%;
+}
+
+.blob-4 {
+  top: calc(60% + 340px);
+  left: 90%;
+}
+
+.blob-5 {
+  top: calc(82% + 340px);
+  left: 50%;
+}
+
+/* From md the horizontal centres are the mockup's own, which hang the glows
+   off the left and right edges rather than sitting them inside the column. */
 @media (min-width: 768px) {
-  .blob {
-    width: 680px;
-    height: 680px;
+  /* The mockup's own 680px, as an intermediate step. Going straight to 940px
+     here made the glows overlap badly: 768 is the width where the page is
+     shortest, so five glows are packed into the least vertical space, and the
+     overlapping emeralds lifted the background far enough to drop accent-text
+     and warm-text below 4.5:1. */
+  :root {
+    --blob-size: 680px;
+  }
+
+  .blob-1 {
+    left: 180px;
+  }
+
+  .blob-2 {
+    left: calc(100% - 120px);
+  }
+
+  .blob-3 {
+    left: 100px;
+  }
+
+  .blob-4 {
+    left: calc(100% - 140px);
+  }
+
+  .blob-5 {
+    left: 500px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --blob-size: 940px;
   }
 }
 

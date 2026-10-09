@@ -254,3 +254,19 @@ a reload still shows light.
 **Check the built output, not the source.** The bug was invisible in `globals.css` and obvious in `out/_next/static/chunks/*.css`. `getComputedStyle(el).backdropFilter` returned `"none"` while `CSS.supports("backdrop-filter", "blur(1px)")` returned `true`, which is the shape of a build problem rather than a browser one.
 
 **It looked like a stacking bug and was not.** The symptom was a heading appearing to sit in front of the header. `z-index: 50` was correct and `document.elementFromPoint` confirmed the pill was topmost; the heading was simply showing through a sheet of near-transparent plastic. Testing six stacking variants and getting identical results is what ruled stacking out.
+
+## Background: scrolling glows and a measured palette
+
+**`position: fixed` pins a background to the viewport, `absolute` pins it to the page.** `components/Background.tsx` — a fixed layer shows the same glows no matter how far you scroll, because it never moves relative to the screen. Making it `absolute inset-0` inside a `relative` body sizes it to the whole document instead, so the glows scroll past and new ones arrive. Verified by comparing the layer's height with `document.scrollHeight`.
+
+**Percentages for position, pixels for the bits that must not scale.** `app/globals.css` — the glows sit at `calc(-3% + 340px)` and so on. The percentage spreads them over whatever height the page ends up being; the 340px is half the mockup's 680px box, converting its top-edge figure into a centre. Mixing the two units in one `calc()` is the point, not a smell.
+
+**Placing by centre with `translate(-50%, -50%)`.** `app/globals.css` — with `top`/`left` alone, changing a blob's size moves it, because the box grows from its top-left corner. Shifting it back by half its own size means size and position are independent, which is what makes three responsive sizes possible without three sets of coordinates.
+
+**`overflow: hidden` on the background layer, never on an ancestor of the header.** `components/Background.tsx` — it clips the glows that hang off the page edges so they cannot cause a horizontal scrollbar. It is safe only because that element is a sibling of the header: `overflow: hidden` on an ancestor silently breaks `position: sticky`.
+
+**Contrast has to be measured against what is actually drawn.** `app/globals.css` — a translucent panel has no colour of its own, so the number that matters is text against bg + glow + panel composited together. The method: screenshot the page with the content hidden, take the most extreme background pixel at four widths, composite each glass fill over it, then compute WCAG 2.1. Assuming the glow's nominal alpha is wrong in both directions, because a radial gradient only reaches full strength at its centre and because two overlapping glows go brighter than either alone.
+
+**Worst case is not typical case.** `CLAUDE.md` — dark `text` reads 18.38:1 on the plain page background and 6.44:1 at a glow centre under a glass panel. Both are true; the second is the one that has to clear 4.5:1. Quoting only the first is how a palette passes review and still fails in use.
+
+**Overlap is a contrast input.** `app/globals.css` — five glows at 940px on the 768px layout overlapped enough to lift the background past the point where `accent-text` and `warm-text` cleared 4.5:1, even though each glow's opacity was unchanged. An intermediate 680px size at `md` fixed it. Sizes, opacities and text colours are one system, which is why CLAUDE.md now says not to change one without re-running the check.

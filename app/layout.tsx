@@ -47,7 +47,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       // this one element. This tells React to allow that here and only here.
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
+      {/* relative, so Background can be absolutely positioned over the
+          whole document rather than fixed to the viewport. */}
+      <body className="relative min-h-full flex flex-col">
         <Providers>
           {/* First in the DOM, so it is the first stop in the tab order. */}
           <SkipLink />
