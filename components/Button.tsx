@@ -24,6 +24,13 @@ const variants: Record<Variant, string> = {
   glass: "glass-strong",
 };
 
+/**
+ * Note for callers: `className` cannot change the display of this element.
+ * `inline-flex` below is always present, and CSS picks the winner by
+ * stylesheet order rather than by the order classes are written, so passing
+ * `hidden` or `block` here will not take effect. To show or hide a Button
+ * responsively, put the utility on a wrapper element instead.
+ */
 type ButtonProps = {
   href: string;
   variant?: Variant;

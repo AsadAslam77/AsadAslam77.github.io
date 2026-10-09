@@ -107,7 +107,7 @@ export default function MobileMenu() {
               ))}
             </ul>
           </nav>
-          <Button href={header.cta.href} className="mt-2 flex w-full">
+          <Button href={header.cta.href} className="mt-2 w-full">
             {header.cta.label}
           </Button>
         </GlassCard>

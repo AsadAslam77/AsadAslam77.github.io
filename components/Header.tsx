@@ -47,9 +47,16 @@ export default function Header() {
 
           <div className="flex items-center gap-3">
             <ThemeToggle />
-            <Button href={header.cta.href} className="hidden lg:inline-flex">
-              {header.cta.label}
-            </Button>
+            {/* The wrapper carries the responsive visibility, not the
+                Button. A display utility passed through className cannot
+                override Button's own `inline-flex`: CSS resolves by
+                stylesheet order, not by the order classes appear in the
+                attribute, and Tailwind emits `hidden` before `inline-flex`.
+                Passing "hidden lg:inline-flex" here left the button visible
+                on phones, wrapped onto two lines. */}
+            <span className="hidden lg:inline-flex">
+              <Button href={header.cta.href}>{header.cta.label}</Button>
+            </span>
             <MobileMenu />
           </div>
         </GlassCard>

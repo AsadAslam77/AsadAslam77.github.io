@@ -318,3 +318,13 @@ a reload still shows light.
 **Copy lives in content.md first.** `content.md`, `lib/content.ts` — new wording went into `content.md` and then into `lib/content.ts`, not just into the typed file. If only the code changes, the two drift and `content.md` stops being worth reading.
 
 **Record a decision when it stops being true.** `PLAN.md` — the Decisions list said "the name first, the role line in amber below it", which was the mockup's order. It now says the opposite, and why. A stale decision is worse than no decision, because the next person trusts it.
+
+## The header regression: class order is not CSS order
+
+**Writing a class later in the attribute does not make it win.** `components/Header.tsx` — `class="inline-flex ... hidden lg:inline-flex"` computed to `display: flex` on a phone. HTML's class attribute is an unordered set; the browser resolves conflicts by specificity and then by the order the rules appear *in the stylesheet*. Tailwind emits `.hidden` before `.inline-flex`, so `inline-flex` won no matter how the attribute was written. The "Hire me" button stayed on screen at 375px, wrapped onto two lines, and pushed the header from 70px to 80px.
+
+**A component that bakes in a utility takes it away from its callers.** `components/Button.tsx` — `Button` always sets `inline-flex`, so no caller can change its display through `className`. The fix is a wrapper element carrying the responsive visibility, and a note on the props type saying so. The alternative, stripping the base class when a caller passes a conflicting one, would be a regex over class names: clever, and wrong the first time someone writes an unusual utility.
+
+**A passing test suite is only as good as what it asserts.** The header had 30 checks and none of them caught this, because they tested the nav links and the menu button at 360 but never asserted that the header's own "Hire me" was hidden there. The replacement walks ten widths in both themes and checks visibility of all three groups, that the pill stays one row at 70px, and that nothing overflows it: 120 checks.
+
+**A failing check is not always a failing page.** The first run of that matrix reported overflow at every width below `lg`. The culprit was the check: a `display: none` element reports a 0x0 rectangle at the origin, which reads as "sticks out past the left edge". Worth confirming what a failure actually means before changing the code it points at.
