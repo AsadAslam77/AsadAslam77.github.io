@@ -57,8 +57,9 @@ Tokens (CSS variables, light on `:root`, dark on `.dark`):
 - Glass panel: translucent fill, 1px border, soft shadow, `backdrop-filter: blur(18px) saturate(150%)`. Add an `@supports not (backdrop-filter: blur(1px))` fallback with a more opaque fill. **Never hand-write `-webkit-backdrop-filter`**: Lightning CSS treats the hand-written prefix as authoritative and drops the standard declaration from the build, and Chrome does not support the prefixed form, so nothing frosts. Write the standard property only and let the build add prefixes.
 - A panel that overlays moving content (the mobile menu) uses `glass-solid`, not `glass-strong`. A 12% white wash lets the text behind it read straight through.
 - Radii: large panels 24 to 32px, pills 999px, inner images 14px.
-- Background: five large glows (emerald and amber) behind the content, drawn as a three-stop `radial-gradient` rather than `filter: blur`, so the GPU has no blur pass to run. The mockup values: dark rgba(16,185,129,0.38) and rgba(251,191,36,0.20); light rgba(16,185,129,0.30) and rgba(245,158,11,0.25).
-- The glows sit on a layer that is `absolute` over the whole document, not `fixed` to the viewport, so they scroll with the content and a new one comes into view every so often, as the mockups do. Vertical centres at -3%, 8%, 33%, 60% and 82% of page height (plus 340px, half the mockup's 680px box, because each glow is placed by its centre), alternating left, right, left, right, left. Sizes 420px, 680px from `md`, 940px from `lg` — the step at `md` exists because that is where the page is shortest, so the glows overlap most.
+- Background: five large glows (emerald and amber) behind the content, drawn as an eight-stop `radial-gradient` rather than `filter: blur`, so the GPU has no blur pass to run. Light uses the mockup values, rgba(16,185,129,0.30) and rgba(245,158,11,0.25). Dark is deliberately softer than the mockup's 0.38 and 0.20: **rgba(16,185,129,0.28)** and **rgba(251,191,36,0.15)**, with `--blob-scale: 1.15` spreading them wider. At full strength the glows read as solid green shapes against the near-black page rather than as light; a lower peak over a larger area reads as a glow. Light needs none of this, because its glows sit on a pale page.
+- The gradient stops are fitted, not guessed. The mockup's recipe (a 680px circle blurred by 130px) was rendered in isolation and its alpha read outward from the centre; the stops reproduce that curve to within 0.006 alpha, which is inside 8-bit quantisation. Measured profile as a fraction of peak, at 0/13/27/40/53/67/80/100% of the radius: 1.00, 0.98, 0.89, 0.71, 0.49, 0.26, 0.10, 0.00. Note the glow reaches 600px, not the 470px that "680px blurred by 130px" suggests.
+- The glows sit on a layer that is `absolute` over the whole document, not `fixed` to the viewport, so they scroll with the content and a new one comes into view every so often, as the mockups do. Vertical centres at -3%, 8%, 33%, 60% and 82% of page height (plus 340px, half the mockup's 680px box, because each glow is placed by its centre), alternating left, right, left, right, left. Sizes 600px, 900px from `md`, 1200px from `lg`; 1200px is twice the 600px glow radius, so `lg` renders the mockup's glow at its true size. The smaller steps keep the glows in proportion on narrower screens. Contrast measures identically at 360, 768, 1024 and 1440.
 
 - Accessibility: visible focus styles, 44px touch targets, text contrast of at least 4.5:1, respect `prefers-reduced-motion` (`MotionConfig reducedMotion="user"`).
 - Motion: one staggered hero entrance, a subtle hover on project cards, `whileInView` reveals in the work section only. Animate only opacity and transform.
@@ -69,12 +70,14 @@ Measured, not estimated: screenshot the page with the content hidden, take the m
 
 | token | dark on plain bg | dark worst case | light on plain bg | light worst case |
 |---|---|---|---|---|
-| text | 18.38 | 6.44 | 17.24 | 13.16 |
-| muted | 11.05 | 3.87 (see below) | 6.32 | 4.82 |
-| accent-text | 13.04 | 4.57 | 6.11 | 4.66 |
-| warm-text | 13.39 | 4.69 | 6.15 | 4.69 |
+| text | 18.38 | 7.88 | 17.24 | 13.16 |
+| muted | 11.05 | 4.74 | 6.32 | 4.82 |
+| accent-text | 13.04 | 5.59 | 6.11 | 4.66 |
+| warm-text | 13.39 | 5.74 | 6.15 | 4.69 |
 
-The one number below 4.5:1 is `muted` in dark over a `glass-strong` chip. On bare background and on `.glass` it is 4.62:1. So: **on `glass-strong` chips use `text`, never `muted`.** Pushing `muted` up to #CDD6D1 would clear it everywhere but leaves it 1.41:1 from body text, which is not a usable hierarchy.
+Everything clears 4.5:1 on every surface, at 360, 768, 1024 and 1440.
+
+Dark had no headroom at the mockup's 0.38 emerald: `muted` was 3.87:1 over a `glass-strong` chip and only the softer glows bought it back. Keep using `text` rather than `muted` on `glass-strong` chips anyway — it is the house style, and it is what stops this becoming load-bearing again if the glows are ever turned back up.
 
 **Do not change the glow opacities, the glow sizes, or any text token without re-running the contrast check.** They are coupled: the opacities set how bright the background can get, the sizes set how much the glows overlap, and the text tokens are tuned against the result.
 

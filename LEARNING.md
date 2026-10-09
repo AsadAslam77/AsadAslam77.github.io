@@ -270,3 +270,23 @@ a reload still shows light.
 **Worst case is not typical case.** `CLAUDE.md` — dark `text` reads 18.38:1 on the plain page background and 6.44:1 at a glow centre under a glass panel. Both are true; the second is the one that has to clear 4.5:1. Quoting only the first is how a palette passes review and still fails in use.
 
 **Overlap is a contrast input.** `app/globals.css` — five glows at 940px on the 768px layout overlapped enough to lift the background past the point where `accent-text` and `warm-text` cleared 4.5:1, even though each glow's opacity was unchanged. An intermediate 680px size at `md` fixed it. Sizes, opacities and text colours are one system, which is why CLAUDE.md now says not to change one without re-running the check.
+
+## Matching a blur with a gradient
+
+**Fit the curve, do not guess at it.** `app/globals.css` — the glows went through three hand-guessed gradients before this one, and each looked subtly wrong. The fix was to stop guessing: render the mockup's exact recipe (a 680px circle with `filter: blur(130px)`) on its own, read the alpha outward from the centre pixel by pixel, and fit the gradient stops to the numbers. The result matches to within 0.006 alpha, which is smaller than one step of 8-bit colour.
+
+**How to read alpha back out of a screenshot.** `scratchpad/profile.mjs` — a screenshot has no alpha channel, it is already composited. But if the glow colour and the background colour are both known, then `observed = glow × a + background × (1 − a)` can be rearranged to `a = (observed − background) / (glow − background)`. Using the channel with the widest separation (green, 185 against 16) keeps the rounding error small.
+
+**A blurred circle is much wider than its box.** `app/globals.css` — "680px circle, blur 130px" reads like a glow about 470px across. Measured, it reaches 600px, because a Gaussian blur has a long tail that keeps spreading well past the radius you would estimate. Every earlier version of the background looked tight and died too early for exactly this reason.
+
+**The same assets can look different for a reason that is not the assets.** The last visible difference against the mockup was that our glows covered proportionally more of the page. The glows were right; the page was 3323px against the mockup's 4682px, because the sections are still stubs. Padding the page to a matching length made the two backgrounds line up, which is what proved the recipe correct.
+
+## Softening the dark glows
+
+**The same opacity does not read the same on a dark page.** `app/globals.css` — the mockup's 0.38 emerald looks like light on a pale background and like a solid green shape on a near-black one, because what the eye judges is the *contrast step* between the glow and the page, and that step is far bigger in dark mode. Dark therefore gets 0.28 and a 1.15x spread while light keeps the mockup's values.
+
+**Lower peak, wider spread, same impression.** `app/globals.css` — softening by only lowering opacity makes a glow weak; softening by only enlarging it makes a wash. Doing both keeps roughly the same amount of light on the page while removing the bright core that made it read as a shape.
+
+**A `--blob-scale` variable keeps one rule serving two themes.** `app/globals.css` — `width: calc(var(--blob-size) * var(--blob-scale))` means the responsive sizes stay in one place and the theme only adjusts a multiplier, instead of duplicating three breakpoints per theme.
+
+**Softening a background is contrast-positive, which is worth knowing before measuring.** `app/globals.css` — in dark mode every text token is light, so anything that lowers the background can only raise contrast. The check still has to be re-run, but the direction is known in advance: dark `muted` went from 3.87:1 to 4.74:1 and cleared `glass-strong`, which had been the one failing pair in the whole palette.
