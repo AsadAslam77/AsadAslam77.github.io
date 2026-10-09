@@ -117,6 +117,13 @@ html {
 
 /* ---------------------------------------------------------------------------
    Glass panels.
+
+   No hand-written -webkit-backdrop-filter here. Chrome does not support the
+   prefixed property at all, and Lightning CSS (the minifier Next 16 uses)
+   treated a hand-written prefix as authoritative and dropped the standard
+   declaration from the build, so nothing was ever frosted in Chrome. Writing
+   only the standard property lets the build add whatever prefixes the
+   browser targets actually need.
    --------------------------------------------------------------------------- */
 
 .glass {
@@ -124,7 +131,6 @@ html {
   border: 1px solid var(--border);
   box-shadow: 0 8px 32px var(--shadow);
   backdrop-filter: blur(18px) saturate(150%);
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
 }
 
 .glass-strong {
@@ -132,7 +138,6 @@ html {
   border: 1px solid var(--border);
   box-shadow: 0 8px 32px var(--shadow);
   backdrop-filter: blur(18px) saturate(150%);
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
 }
 
 /* An overlay panel sits over content that moves behind it, so a translucent
@@ -147,7 +152,6 @@ html {
   border: 1px solid var(--border);
   box-shadow: 0 8px 32px var(--shadow);
   backdrop-filter: blur(18px) saturate(150%);
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
 }
 
 /* Without blur, translucent panels sitting over a coloured blob become hard
@@ -167,7 +171,6 @@ html {
   .glass-strong,
   .glass-solid {
     backdrop-filter: blur(12px) saturate(150%);
-    -webkit-backdrop-filter: blur(12px) saturate(150%);
   }
 }
 

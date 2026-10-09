@@ -246,3 +246,11 @@ a reload still shows light.
 **`color-mix()` with a plain fallback.** `app/globals.css` — the rule sets `background` twice. An old browser does not understand the second declaration and keeps the first; a current one takes the second. That is the whole CSS fallback mechanism: a browser discards declarations it cannot parse.
 
 **A fixed background and a sticky header do not fight.** `components/Header.tsx` — verified by `document.elementFromPoint` rather than by eye: inside the pill the topmost element is the pill, in the gap above it the header itself. `position: sticky` would break if any ancestor had `overflow: hidden`, which is worth remembering before wrapping the page in one.
+
+## Task 6 follow-up: the glass was never frosted
+
+**A build tool can silently delete a CSS declaration.** `app/globals.css` — the source had `backdrop-filter` followed by a hand-written `-webkit-backdrop-filter`. Lightning CSS, the minifier Next 16 uses, treated the hand-written prefix as authoritative and dropped the standard declaration, so the built CSS carried only the prefixed one. Chrome does not support `-webkit-backdrop-filter` at all, so every glass panel on the site had been plain translucent plastic since task 2. The fix is to write only the standard property and let the build add prefixes.
+
+**Check the built output, not the source.** The bug was invisible in `globals.css` and obvious in `out/_next/static/chunks/*.css`. `getComputedStyle(el).backdropFilter` returned `"none"` while `CSS.supports("backdrop-filter", "blur(1px)")` returned `true`, which is the shape of a build problem rather than a browser one.
+
+**It looked like a stacking bug and was not.** The symptom was a heading appearing to sit in front of the header. `z-index: 50` was correct and `document.elementFromPoint` confirmed the pill was topmost; the heading was simply showing through a sheet of near-transparent plastic. Testing six stacking variants and getting identical results is what ruled stacking out.
