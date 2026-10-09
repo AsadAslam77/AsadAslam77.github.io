@@ -101,3 +101,38 @@ and `pointer-events: none` stops them intercepting clicks.
 has no colour of its own; its effective colour is the blend of the panel, the
 blob behind it and the page background. Contrast has to be measured against
 that blend, not against the page background alone.
+
+## Task 3: fonts
+
+**`next/font` self-hosts Google fonts.** `app/layout.tsx` — the font files are
+downloaded at build time and written into `out/_next/static/media/`, so the
+visitor's browser never contacts Google. Verified: the page makes zero
+requests to fonts.googleapis.com or fonts.gstatic.com.
+
+**A font's `.variable` is a generated class.** `app/layout.tsx` — calling
+`Space_Grotesk({ variable: "--font-space-grotesk" })` returns an object whose
+`.variable` is a class name that defines that CSS variable. Both classes go
+on `<html>`, which is what makes the variables available page-wide.
+
+**Fonts are split by unicode range, not by weight.** `out/_next/static/media/`
+— Google serves a family as several files, each covering a range of
+characters, and the browser downloads only the ones whose characters actually
+appear. Eight files are built; only the two latin ones are ever requested.
+
+**`display: "swap"`.** `app/layout.tsx` — text paints immediately in a
+fallback face and swaps to the real one when it arrives, instead of staying
+invisible while the font downloads.
+
+**A base rule beats repeating a class.** `app/globals.css` — one
+`@layer base { h1, h2, h3 { font-family: var(--font-heading) } }` rule gives
+every heading the display face. Putting it in `@layer base` keeps its
+specificity low, so a utility class can still override it where needed.
+
+**`--font-sans` is special to Tailwind.** `app/globals.css` — Tailwind points
+the document's default font at `--font-sans`, so defining it as Geist makes
+body text Geist with no class anywhere on the page.
+
+**The build needs the internet, the visitor does not.** `app/layout.tsx` —
+next/font fetches from Google while building. GitHub Actions runners have
+internet so the deploy works, but a Google Fonts outage would fail a build.
+`next/font/local` with the files committed to the repo would remove that.

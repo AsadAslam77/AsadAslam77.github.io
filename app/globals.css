@@ -78,11 +78,24 @@
   --text-statement: var(--step-statement);
   --text-contact: var(--step-contact);
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Tailwind points the document default font at --font-sans, so body text
+     becomes Geist with no class anywhere. --font-heading adds a font-heading
+     utility for anything that needs Space Grotesk explicitly. */
+  --font-sans: var(--font-geist);
+  --font-heading: var(--font-space-grotesk);
 }
 
 /* --------------------------------------------------------------------------- */
+
+/* Headings use the display face globally, so no class is needed on each one.
+   It sits in @layer base so a utility class can still override it. */
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading);
+  }
+}
 
 body {
   background: var(--bg);

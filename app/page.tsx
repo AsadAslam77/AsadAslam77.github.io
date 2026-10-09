@@ -96,16 +96,16 @@ export default function Home() {
       <section className="mt-12">
         <h2 className="text-xl font-medium">Fluid type</h2>
         <div className="mt-4 space-y-4">
-          <p className="text-name font-bold leading-none tracking-[-0.03em]">
+          <p className="font-heading text-name font-bold leading-none tracking-[-0.03em]">
             Muhammad Asad
           </p>
-          <p className="text-section font-bold tracking-[-0.02em]">
+          <p className="font-heading text-section font-bold tracking-[-0.02em]">
             Selected work
           </p>
-          <p className="text-statement font-medium tracking-[-0.02em]">
+          <p className="font-heading text-statement font-medium tracking-[-0.02em]">
             I build the whole product.
           </p>
-          <p className="text-contact font-bold tracking-[-0.02em]">
+          <p className="font-heading text-contact font-bold tracking-[-0.02em]">
             Let&apos;s work together.
           </p>
         </div>

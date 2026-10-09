@@ -40,7 +40,7 @@ Every task that runs a build checks that `out/CNAME` exists and reads
 - [x] **2. Design tokens and glass.** The CSS variables for both modes, the
       `.glass` class with its `@supports` fallback, the background blobs and
       the fluid type scale, in `app/globals.css`.
-- [ ] **3. Fonts.** Space Grotesk for headings and Geist for body through
+- [x] **3. Fonts.** Space Grotesk for headings and Geist for body through
       `next/font`.
 - [ ] **4. Theme toggle.** `next-themes` and a `ThemeToggle` that follows the
       system setting by default, remembers a choice and does not flash on load.
