@@ -86,5 +86,4 @@ so none of these block the build:
 - The GetUnityCodes.com tech stack
 - Whether PetNove gets a link or is marked private
 - Location, and confirmation of the contact email
-- Kodexl is linked only after the cleanup list at the end of `content.md` is
-  done
+- Kodexl is linked only after its own site is cleaned up

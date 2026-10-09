@@ -64,7 +64,7 @@ Filter tabs: All, Web, E-commerce, Mobile. (Show the tabs only when there are 6 
 - Tech: Expo, React Native, TypeScript, Firebase, OpenAI API
 - Screenshot: assets/petnove-weight.png **[FILL IN]**
 
-Also built: Kodexl, https://kodexel.vercel.app. Link it only after the site is cleaned up (see the last section).
+Also built: Kodexl, https://kodexel.vercel.app. Link it only after its own site is cleaned up.
 
 ## Services
 Each service has a description, a "Delivers" line, a button and a screenshot slot.
@@ -111,11 +111,3 @@ Education: BS Computer Science, University of Sahiwal, 2022 to 2026
 - Line: Hiring for a full stack role or have a project in mind? Send me a message.
 - Buttons: Email me, LinkedIn, GitHub, Download CV
 - Footer: © 2026 Muhammad Asad
-
-## To fix before featuring Kodexl
-- The page title and description still say "Create Next App".
-- The testimonials are placeholder text with placeholder names.
-- The footer has placeholder contact details.
-- "Privacy Police" and "Cookies Police" should say "Policy".
-- The studio name is spelled Kodexl, Kodexel and Kodexal in different places.
-- The stats (100+ projects, 80+ clients) should be true, or removed.
