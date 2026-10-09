@@ -5,7 +5,7 @@ Personal portfolio and freelance site for Muhammad Asad at https://asaddev.me.
 Content lives in `content.md`. Visual references (dark and light mockups) live in `design/`.
 
 ## Stack
-- Next.js (App Router), TypeScript, Tailwind CSS
+- Next.js (App Router), TypeScript, Tailwind CSS v4
 - `motion` (import from "motion/react") for animation
 - `next-themes` for dark and light mode
 - Fonts through next/font: Space Grotesk (headings), Geist (body)
