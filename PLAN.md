@@ -12,7 +12,8 @@ Rules and design tokens: `CLAUDE.md`. Copy: `content.md`. Visual reference:
 
 - Tailwind CSS v4 (configured in CSS with `@theme`, no `tailwind.config.js`).
 - About is a section after Services, not a separate `/about` page.
-- Hero follows the mockups: the name first, the role line in amber below it.
+- Hero departs from the mockups: the role line sits above the name as a
+  kicker, not below it as a subtitle. Asad's call, after seeing it built.
 - No contact form. Static export has no server, so contact is a `mailto:` link.
 - Work filter tabs are built in code but only rendered when there are 6 or
   more projects, so they stay hidden for now.

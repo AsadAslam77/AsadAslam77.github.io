@@ -308,3 +308,13 @@ a reload still shows light.
 **`clamp()` for sizes the type scale does not cover.** `components/Hero.tsx` — the mockup's 26px role line and 20px intro are desktop measurements. `clamp(20px, 3vw, 26px)` keeps the desktop figure as the maximum while letting the phone have something sensible, without adding two more tokens for two one-off sizes.
 
 **Spacing belongs to the parent, not the child.** `components/Chip.tsx` — `Chip` sets no margin and no gap, so the hero can lay chips out with an 8px gap and the statement section with 12px, using the same component. A chip that carried its own margin would fight every layout it was put in.
+
+## Hero: reordering and the dot
+
+**Visual order and heading order are separate things.** `components/Hero.tsx` — the role line now sits above the name, but it is still a plain `<p>` and the name is still the `<h1>`. A screen reader user jumping between headings lands on "Muhammad Asad" either way; the kicker is read in normal flow just before it. Promoting the kicker to a heading because it is visually first would have given the page two competing h1s and said something untrue about the structure.
+
+**`items-center` is wrong for a bullet beside text that can wrap.** `components/Hero.tsx` — with one line it looks right; the moment the text wraps to two lines on a phone, centring drops the dot into the gap between them. The fix is `items-start` plus a top margin of about half the line box minus half the dot, so it aligns with the first line whether the text wraps or not. Measured: 0.4px off the first line's centre at both 360 and 1440.
+
+**Copy lives in content.md first.** `content.md`, `lib/content.ts` — new wording went into `content.md` and then into `lib/content.ts`, not just into the typed file. If only the code changes, the two drift and `content.md` stops being worth reading.
+
+**Record a decision when it stops being true.** `PLAN.md` — the Decisions list said "the name first, the role line in amber below it", which was the mockup's order. It now says the opposite, and why. A stale decision is worse than no decision, because the next person trusts it.

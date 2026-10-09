@@ -168,8 +168,8 @@ export const hero = {
   roleLine: "Full Stack Developer",
   name: "Muhammad Asad",
   intro:
-    "I build Next.js and Firebase web apps, Shopify storefronts and React Native apps, from the interface to the backend.",
-  availability: "Available for freelance projects and full-time roles.",
+    "From MVPs to enterprise platforms, I build high-performance web, mobile, and e-commerce products with seamless integrations and intelligent AI-powered capabilities.",
+
   buttons: [
     { label: "Hire me", href: "#contact" },
     { label: "View projects", href: "#work" },

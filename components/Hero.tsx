@@ -1,6 +1,6 @@
 /**
- * The hero: the name, the role line, the intro, the availability line, two
- * buttons, and the glass profile card.
+ * The hero: the role line, the name, the intro, two buttons and the glass
+ * profile card.
  *
  * Every word comes from lib/content.ts. A server component: no state, no
  * handlers, no JavaScript sent to the browser. Animation is task 15.
@@ -27,26 +27,21 @@ export default function Hero() {
       className="grid items-center gap-10 py-14 lg:grid-cols-[1.3fr_1fr] lg:gap-12 lg:pt-[88px] lg:pb-28"
     >
       <div>
-        {/* The only h1 on the page. Every section heading is an h2. */}
-        <h1 className="text-name leading-none font-bold tracking-[-0.03em]">
-          {hero.name}
-        </h1>
-
-        <p className="mt-6 text-[clamp(20px,3vw,26px)] text-warm-text">
+        {/* The role line sits above the name as a kicker. The mockup has it
+            below as a subtitle; this is a deliberate departure (see PLAN.md).
+            It stays a plain <p>: the h1 below is still the page's heading,
+            so a screen reader navigating by heading lands on the name. */}
+        <p className="text-[clamp(18px,2.4vw,22px)] text-warm-text">
           {hero.roleLine}
         </p>
 
-        <p className="mt-4 max-w-[560px] text-[clamp(17px,2vw,20px)] text-muted">
-          {hero.intro}
-        </p>
+        {/* The only h1 on the page. Every section heading is an h2. */}
+        <h1 className="mt-3 text-name leading-none font-bold tracking-[-0.03em]">
+          {hero.name}
+        </h1>
 
-        <p className="mt-4 flex items-center gap-2.5">
-          {/* Decorative: the sentence already says it. */}
-          <span
-            aria-hidden="true"
-            className="inline-block h-2 w-2 shrink-0 rounded-full bg-accent"
-          />
-          {hero.availability}
+        <p className="mt-6 max-w-[560px] text-[clamp(17px,2vw,20px)] text-muted">
+          {hero.intro}
         </p>
 
         <div className="mt-9 flex flex-wrap gap-4">

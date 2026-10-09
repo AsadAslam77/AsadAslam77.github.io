@@ -26,9 +26,10 @@ Rules for whoever builds the site (including Claude Code):
 - Theme toggle (sun and moon icon) and a "Hire me" button
 
 ## Hero
+Order on the page: role line, then the name, then the intro.
 - Role line: Full Stack Developer
 - Name: Muhammad Asad
-- Intro: I build Next.js and Firebase web apps, Shopify storefronts and React Native apps, from the interface to the backend.
+- Intro: From MVPs to enterprise platforms, I build high-performance web, mobile, and e-commerce products with seamless integrations and intelligent AI-powered capabilities.
 - Availability line (with a green dot): Available for freelance projects and full-time roles.
 - Buttons: "Hire me" (to Contact), "View projects" (to Work)
 - Profile card (glass): photo slot **[FILL IN photo]**, name, role, chips: Next.js, Firebase, Shopify, React Native
