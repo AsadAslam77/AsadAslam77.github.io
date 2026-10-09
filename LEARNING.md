@@ -192,3 +192,31 @@ while dark is active, and flips when the theme does. The icons are
 The pre-paint script reads it on the next visit, so an explicit choice beats
 the system setting. Verified: with the system set to dark and light chosen,
 a reload still shows light.
+
+## Task 5: typed content and GlassCard
+
+**`satisfies` vs a type annotation.** `lib/content.ts` — `const projects: Project[] = [...]` checks the data but then forgets it, so `projects[0].name` is just `string`. `as const satisfies readonly Project[]` checks it *and* keeps the exact literal types, so `projects[0].name` is the literal `"Wajood"`. Checking without widening is the whole point of `satisfies`, which is why it was added to TypeScript as a separate keyword rather than changing how `:` works.
+
+**`as const` makes data readonly and literal.** `lib/content.ts` — it turns `string` into `"Wajood"`, `string[]` into a readonly tuple, and every property into `readonly`. That is why the types are written with `readonly` on every field: a mutable `Project[]` would reject readonly data.
+
+**A missing value should be an object, not an empty string.** `lib/content.ts` — `screenshot: ""` renders as nothing and nobody notices for a month. `screenshot: fillIn("...")` is an object, and an object is not a valid React child, so TypeScript refuses to compile `{project.screenshot}` at all. The type system does the remembering instead of a human.
+
+**A discriminated union.** `lib/content.ts` — `Unresolved` is two object shapes joined by `|`, told apart by the `unresolved` field. After `if (v.unresolved === "confirm")` TypeScript knows `v.value` exists; in the other branch it knows it does not. One field decides which shape you are holding.
+
+**A type guard (`v is Unresolved<T>`).** `lib/content.ts` — a normal function returning `boolean` tells the compiler nothing. The return type `v is Unresolved<T>` promises that a `true` result means the narrowing is safe, so `resolve()` can use a plain `if` and have the types follow.
+
+**Returning `T | null` forces the caller to think.** `lib/content.ts` — `resolve()` hands back `null` for a missing value, and `null` cannot be rendered without a check. That is what will make every section in tasks 7 to 12 draw a placeholder slot rather than a silent gap.
+
+**Node runs TypeScript directly now.** `scripts/placeholders.mjs` — since Node 23.6 the runtime strips type annotations itself, so a plain `.mjs` script can `import("../lib/content.ts")` with no build step and no second copy of the data. It only strips types; it does not check them. That is still `tsc`'s job.
+
+**`pathToFileURL` on Windows.** `scripts/placeholders.mjs` — a dynamic `import()` takes a URL, and `D:\path\file.ts` is not one: the drive letter reads like a URL scheme. `pathToFileURL()` converts it properly.
+
+**A report should not be a gate.** `scripts/placeholders.mjs` — it always exits 0. A non-zero exit would make the unfinished content fail a build or a deploy, which would be the wrong thing: the point is to list what is left, not to block work.
+
+**Why the CV is checked on disk, not marked `fillIn`.** `scripts/placeholders.mjs` — whether a file exists is a fact the script can look up, so hard-coding it as a placeholder would mean editing `content.ts` the day the file arrives. It is checked with `existsSync` instead and stops being reported on its own.
+
+**Tailwind scans source text for class names.** `components/GlassCard.tsx` — Tailwind generates CSS only for strings it can literally see in the files. A class built at runtime, like `` rounded-[${n}px] ``, is never seen and so never generated, which is why the radii are a lookup object of complete class names.
+
+**A component can choose its own HTML element.** `components/GlassCard.tsx` — the `as` prop is renamed to `Tag` while destructuring, and a capitalised variable in JSX is treated as a component or element name. That is how one panel can render as an `<article>` in the work grid and an `<li>` inside a list, so the markup stays meaningful without duplicating the component.
+
+**Union props beat a free-form string.** `components/GlassCard.tsx` — `radius?: "panel" | "card" | "inner" | "pill"` means a typo is a build error and the editor offers the four choices. `radius?: string` would accept `"panle"` silently.

@@ -6,7 +6,17 @@
  * this file with the real page and Header.
  */
 
+import GlassCard from "@/components/GlassCard";
 import ThemeToggle from "@/components/ThemeToggle";
+
+const radiusNames = ["panel", "card", "inner", "pill"] as const;
+
+const radiusPixels: Record<(typeof radiusNames)[number], string> = {
+  panel: "32px",
+  card: "24px (default)",
+  inner: "14px",
+  pill: "999px",
+};
 
 const colourTokens = [
   { name: "bg", varName: "--bg" },
@@ -96,6 +106,29 @@ export default function Home() {
               </a>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* GlassCard: all four radii against both fills */}
+      <section className="mt-12">
+        <h2 className="text-xl font-medium">GlassCard</h2>
+        <p className="mt-2 text-muted">
+          Every radius and both fills. Temporary, like the rest of this page.
+        </p>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {radiusNames.map((radius) => (
+            <GlassCard key={radius} as="article" radius={radius} className="p-5">
+              <p className="text-sm font-medium">radius=&quot;{radius}&quot;</p>
+              <p className="text-sm text-muted">{radiusPixels[radius]}</p>
+              <GlassCard
+                radius={radius}
+                fill="strong"
+                className="mt-3 flex min-h-11 items-center justify-center px-4 text-sm"
+              >
+                fill=&quot;strong&quot;
+              </GlassCard>
+            </GlassCard>
+          ))}
         </div>
       </section>
 

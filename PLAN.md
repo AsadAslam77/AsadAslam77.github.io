@@ -44,7 +44,7 @@ Every task that runs a build checks that `out/CNAME` exists and reads
       `next/font`.
 - [x] **4. Theme toggle.** `next-themes` and a `ThemeToggle` that follows the
       system setting by default, remembers a choice and does not flash on load.
-- [ ] **5. Content data and GlassCard.** `lib/content.ts` with the copy from
+- [x] **5. Content data and GlassCard.** `lib/content.ts` with the copy from
       `content.md` as typed data, and a reusable `GlassCard` panel.
 - [ ] **6. Header.** A floating glass bar on desktop. On phones the logo, the
       theme toggle and a menu button that opens a glass panel. Esc closes it,
