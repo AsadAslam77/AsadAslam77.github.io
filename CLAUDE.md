@@ -19,12 +19,19 @@ Content lives in `content.md`. Visual references (dark and light mockups) live i
 - Do not put a phone number on the site.
 
 ## Learning mode (important)
-Asad is learning from this project. For every task:
+Asad is learning from this project, while building it. For every task:
 1. Plan first, in plain language, before editing any file.
 2. Keep changes small: one feature per commit.
-3. After changing code, explain what each new file or function does and why, and name any new concept (for example server vs client components).
-4. Append a short entry to `LEARNING.md`: the concept, the file where it appears, and one plain sentence.
-5. Prefer simple, readable code over clever code. Comment only where the reason is not obvious.
+3. After changing code, give a short plain explanation of it: what each new
+   file or function does and why, and the name of any new concept (for
+   example server vs client components). Keep it brief and move on.
+4. Append a short entry to `LEARNING.md`: the concept, the file where it
+   appears, and one plain sentence.
+5. Do not quiz Asad. No comprehension questions, no "three questions about
+   this task". Explain, log it, and carry on building. Ask a question only
+   when a real decision needs his answer.
+6. Prefer simple, readable code over clever code. Comment only where the
+   reason is not obvious.
 
 ## Design
 Glass UI (glassmorphism) with dark and light modes. The default follows the visitor's system setting. A toggle in the header switches it and remembers the choice, with no flash on load.
@@ -48,7 +55,7 @@ Tokens (CSS variables, light on `:root`, dark on `.dark`):
 
 - Glass panel: translucent fill, 1px border, soft shadow, `backdrop-filter: blur(18px) saturate(150%)`. Add an `@supports not (backdrop-filter: blur(1px))` fallback with a more opaque fill.
 - Radii: large panels 24 to 32px, pills 999px, inner images 14px.
-- Background: a few large blurred blobs (emerald and amber) behind the content. Dark: rgba(16,185,129,0.38) and rgba(251,191,36,0.20). Light: rgba(16,185,129,0.30) and rgba(245,158,11,0.25).
+- Background: a few large blobs (emerald and amber) behind the content, drawn as `radial-gradient(circle, colour 0%, transparent 70%)` rather than `filter: blur`, so the GPU has no blur pass to run. Dark: rgba(16,185,129,0.24) and rgba(251,191,36,0.20). Light: rgba(16,185,129,0.18) and rgba(245,158,11,0.25). The emerald values are capped by contrast: a glass panel over an emerald blob must still clear 4.5:1 for `muted` text in dark and `warm-text` in light.
 - Accessibility: visible focus styles, 44px touch targets, text contrast of at least 4.5:1, respect `prefers-reduced-motion` (`MotionConfig reducedMotion="user"`).
 - Motion: one staggered hero entrance, a subtle hover on project cards, `whileInView` reveals in the work section only. Animate only opacity and transform.
 

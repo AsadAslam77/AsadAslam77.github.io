@@ -37,7 +37,7 @@ Every task that runs a build checks that `out/CNAME` exists and reads
       `output: 'export'` and `images: { unoptimized: true }`. Move the old
       `index.html` to `legacy/` and `CNAME` to `public/`. Extend `.gitignore`
       for Next.js. First build.
-- [ ] **2. Design tokens and glass.** The CSS variables for both modes, the
+- [x] **2. Design tokens and glass.** The CSS variables for both modes, the
       `.glass` class with its `@supports` fallback, the background blobs and
       the fluid type scale, in `app/globals.css`.
 - [ ] **3. Fonts.** Space Grotesk for headings and Geist for body through

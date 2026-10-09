@@ -1,26 +1,191 @@
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------------------
+   Design tokens. Light values live on :root, dark values on .dark.
+   next-themes puts class="dark" on <html>, so a class is used here rather
+   than a prefers-color-scheme media query: a media query cannot be overridden
+   by a button, and task 4 needs the toggle to win.
+   --------------------------------------------------------------------------- */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #f2f7f4;
+  --text: #08150f;
+  --muted: #4b5f55;
+  --accent: #10b981;
+  --accent-text: #047857;
+  --warm: #f59e0b;
+  --warm-text: #b45309;
+  --glass: rgba(255, 255, 255, 0.55);
+  --glass-strong: rgba(255, 255, 255, 0.8);
+  --border: rgba(255, 255, 255, 0.9);
+  --shadow: rgba(6, 78, 59, 0.14);
+  --on-accent: #08150f;
+
+  /* Decorative background blobs. */
+  --blob-accent: rgba(16, 185, 129, 0.18);
+  --blob-warm: rgba(245, 158, 11, 0.25);
+
+  /* Fluid type. clamp(min, preferred, max): the browser uses the middle
+     value but never goes below the first or above the last, so headings
+     scale with the viewport without a single breakpoint. */
+  --step-name: clamp(48px, 12vw, 88px);
+  --step-section: clamp(32px, 5vw, 44px);
+  --step-statement: clamp(32px, 6vw, 52px);
+  --step-contact: clamp(36px, 8vw, 64px);
 }
 
+.dark {
+  --bg: #06100d;
+  --text: #f4fbf7;
+  --muted: #9db0a6;
+  --accent: #34d399;
+  --accent-text: #6ee7b7;
+  --warm: #fbbf24;
+  --warm-text: #fcd34d;
+  --glass: rgba(255, 255, 255, 0.06);
+  --glass-strong: rgba(255, 255, 255, 0.12);
+  --border: rgba(255, 255, 255, 0.14);
+  --shadow: rgba(0, 0, 0, 0.35);
+  --on-accent: #06100d;
+
+  --blob-accent: rgba(16, 185, 129, 0.24);
+  --blob-warm: rgba(251, 191, 36, 0.2);
+}
+
+/* ---------------------------------------------------------------------------
+   Hand the tokens to Tailwind. This is the Tailwind v4 replacement for
+   tailwind.config.js: each name below becomes a utility class, so --color-bg
+   gives bg-bg and text-bg. "inline" makes the utility read the variable at
+   use time, which is what lets a class follow the theme switch instead of
+   freezing the light value at build time.
+   --------------------------------------------------------------------------- */
+
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-bg: var(--bg);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-text: var(--accent-text);
+  --color-warm: var(--warm);
+  --color-warm-text: var(--warm-text);
+  --color-glass: var(--glass);
+  --color-glass-strong: var(--glass-strong);
+  --color-border: var(--border);
+  --color-on-accent: var(--on-accent);
+
+  --text-name: var(--step-name);
+  --text-section: var(--step-section);
+  --text-statement: var(--step-statement);
+  --text-contact: var(--step-contact);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* --------------------------------------------------------------------------- */
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* :focus-visible rather than :focus, so a mouse click draws no ring but
+   keyboard tabbing always does. */
+:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 3px;
+}
+
+/* ---------------------------------------------------------------------------
+   Glass panels.
+   --------------------------------------------------------------------------- */
+
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 32px var(--shadow);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+}
+
+.glass-strong {
+  background: var(--glass-strong);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 32px var(--shadow);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+}
+
+/* Without blur, translucent panels sitting over a coloured blob become hard
+   to read, so the fill becomes more opaque instead. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background: var(--glass-strong);
+  }
+  .glass-strong {
+    background: var(--bg);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Blur is expensive for a phone GPU to composite, so phones get less of it. */
+@media (max-width: 767px) {
+  .glass,
+  .glass-strong {
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Decorative background blobs. Radial gradients rather than filter: blur,
+   because the soft edge is part of the gradient and costs the compositor
+   nothing per frame.
+   --------------------------------------------------------------------------- */
+
+.blob {
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+}
+
+.blob-accent {
+  background: radial-gradient(circle, var(--blob-accent) 0%, transparent 70%);
+}
+
+.blob-warm {
+  background: radial-gradient(circle, var(--blob-warm) 0%, transparent 70%);
+}
+
+@media (min-width: 768px) {
+  .blob {
+    width: 680px;
+    height: 680px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Reduced motion. scroll-behavior is included because the nav links are
+   in-page anchors, and smooth-scrolling a whole page is exactly the kind of
+   large-area movement that causes problems for vestibular disorders.
+   --------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -17,6 +17,9 @@ build/
 # env files
 .env*
 
+# local screenshots, never committed
+.screenshots/
+
 # os / editor
 .DS_Store
 Thumbs.db

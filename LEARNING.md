@@ -48,3 +48,56 @@ it as unchanged.
 saved as UTF-16, where every character is followed by a zero byte. Git reads
 `.gitignore` as plain text lines, could not match any pattern in it, and so
 ignored nothing at all.
+
+## Task 2: design tokens and glass
+
+**CSS custom properties as a theme.** `app/globals.css` — every colour is a
+variable such as `--muted`, defined once for light on `:root` and again for
+dark on `.dark`. Nothing else in the site names a colour, so switching theme
+is just a class change on `<html>`.
+
+**Why `.dark` is a class and not a media query.** `app/globals.css` — a
+`prefers-color-scheme` media query follows the operating system and cannot be
+overridden by a button. `next-themes` sets `class="dark"` instead, which is
+what makes the toggle in task 4 possible while still defaulting to the
+system setting.
+
+**`@theme inline` is Tailwind v4's config.** `app/globals.css` — Tailwind v4
+has no `tailwind.config.js`. Listing `--color-muted: var(--muted)` inside
+`@theme inline` is what creates the `text-muted` and `bg-muted` classes. The
+`inline` keyword makes the class read the variable when it is used rather
+than baking in the light value at build time, so utilities follow the theme.
+
+**`clamp()` for fluid type.** `app/globals.css` — `clamp(48px, 12vw, 88px)`
+tells the browser to use 12% of the viewport width, but never smaller than
+48px or larger than 88px, so headings scale smoothly with no breakpoints.
+
+**`:focus-visible` vs `:focus`.** `app/globals.css` — `:focus-visible` only
+draws the ring when the browser thinks the user is navigating by keyboard, so
+keyboard users keep a visible outline while mouse users do not see a ring
+after every click.
+
+**`@supports not (...)` as a fallback.** `app/globals.css` — where
+`backdrop-filter` is unavailable, a panel at 6% white over a coloured blob is
+unreadable, so the rule swaps in the more opaque fill. The browser applies it
+only when the feature is genuinely missing.
+
+**Radial gradients instead of `filter: blur`.** `app/globals.css` — a
+`radial-gradient(circle, colour 0%, transparent 70%)` has its soft edge built
+into the gradient, so the GPU never has to run a blur pass over a 680px
+surface, which matters most on phones.
+
+**Server components are the default.** `components/Background.tsx` — this file
+has no `"use client"` because it has no state and no event handlers. It is
+rendered to HTML at build time and ships no JavaScript to the browser. Only
+components that need interactivity, such as the theme toggle, opt into being
+client components.
+
+**Decorative elements must be hidden from assistive tech.** `components/Background.tsx`
+— `aria-hidden="true"` keeps the blobs out of a screen reader's announcement
+and `pointer-events: none` stops them intercepting clicks.
+
+**Alpha compositing and contrast.** `app/globals.css` — a translucent panel
+has no colour of its own; its effective colour is the blend of the panel, the
+blob behind it and the page background. Contrast has to be measured against
+that blend, not against the page background alone.
