@@ -1,60 +1,56 @@
 @import "tailwindcss";
 
-/* Light theme (default) */
+/* Dark theme (default) */
 :root {
-  --bg: #f1f5f9;
-  --fg: #0f172a;
-  --muted: #475569;
-  --accent: #0d9488;
-  --accent-2: #0284c7;
-  --glass-bg: rgba(255, 255, 255, 0.5);
-  --glass-border: rgba(255, 255, 255, 0.75);
-  --glass-shadow: 0 8px 32px rgba(15, 23, 42, 0.08);
-  --blob-1: rgba(45, 212, 191, 0.45);
-  --blob-2: rgba(56, 189, 248, 0.4);
-  color-scheme: light;
-}
-
-/* Dark theme, from the system setting unless the user picks one */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #020617;
-    --fg: #e2e8f0;
-    --muted: #94a3b8;
-    --accent: #2dd4bf;
-    --accent-2: #38bdf8;
-    --glass-bg: rgba(15, 23, 42, 0.45);
-    --glass-border: rgba(148, 163, 184, 0.18);
-    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-    --blob-1: rgba(20, 184, 166, 0.25);
-    --blob-2: rgba(14, 165, 233, 0.2);
-    color-scheme: dark;
-  }
-}
-
-/* Dark theme when the user chooses it manually */
-:root[data-theme="dark"] {
-  --bg: #020617;
-  --fg: #e2e8f0;
-  --muted: #94a3b8;
-  --accent: #2dd4bf;
-  --accent-2: #38bdf8;
-  --glass-bg: rgba(15, 23, 42, 0.45);
-  --glass-border: rgba(148, 163, 184, 0.18);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-  --blob-1: rgba(20, 184, 166, 0.25);
-  --blob-2: rgba(14, 165, 233, 0.2);
+  --bg: #06100d;
+  --fg: #f4fbf7;
+  --muted: #9db0a6;
+  --accent: #34d399;        /* buttons, dots */
+  --accent-soft: #6ee7b7;   /* links, step numbers */
+  --highlight: #fcd34d;     /* amber: subtitle, link hover */
+  --on-accent: #06100d;     /* text on green buttons */
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  --ghost-bg: rgba(255, 255, 255, 0.12);
+  --slot-bg: rgba(255, 255, 255, 0.04);
+  --slot-border: rgba(255, 255, 255, 0.22);
+  --blob-green: rgba(16, 185, 129, 0.38);
+  --blob-amber: rgba(251, 191, 36, 0.2);
   color-scheme: dark;
 }
 
-/* Map the variables to Tailwind classes, e.g. bg-bg, text-fg, text-accent */
+/* Light theme */
+:root[data-theme="light"] {
+  --bg: #f2f7f4;
+  --fg: #08150f;
+  --muted: #4b5f55;
+  --accent: #10b981;
+  --accent-soft: #047857;
+  --highlight: #b45309;
+  --on-accent: #08150f;
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.9);
+  --glass-shadow: 0 8px 32px rgba(6, 78, 59, 0.14);
+  --ghost-bg: rgba(255, 255, 255, 0.8);
+  --slot-bg: rgba(8, 21, 15, 0.04);
+  --slot-border: rgba(8, 21, 15, 0.22);
+  --blob-green: rgba(16, 185, 129, 0.3);
+  --blob-amber: rgba(245, 158, 11, 0.25);
+  color-scheme: light;
+}
+
 @theme inline {
   --color-bg: var(--bg);
   --color-fg: var(--fg);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
-  --color-accent-2: var(--accent-2);
+  --color-accent-soft: var(--accent-soft);
+  --color-highlight: var(--highlight);
+  --color-on-accent: var(--on-accent);
+  --color-ghost: var(--ghost-bg);
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
 }
 
 html {
@@ -65,43 +61,31 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-sans);
-  min-height: 100vh;
+  font-size: 17px;
+  line-height: 1.6;
   overflow-x: hidden;
 }
 
-/* Soft colored glows behind the page, fixed so they stay put while scrolling */
-body::before,
-body::after {
-  content: "";
-  position: fixed;
-  z-index: -1;
-  width: 60vmax;
-  height: 60vmax;
-  border-radius: 50%;
-  filter: blur(90px);
-  pointer-events: none;
+a {
+  color: var(--accent-soft);
+}
+a:hover {
+  color: var(--highlight);
 }
 
-body::before {
-  top: -20vmax;
-  left: -15vmax;
-  background: var(--blob-1);
-}
-
-body::after {
-  bottom: -20vmax;
-  right: -15vmax;
-  background: var(--blob-2);
-}
-
-/* Glass surface: use on cards, header, and sections */
+/* Glass surface. Set the radius per element (rounded-3xl, rounded-full, etc.) */
 .glass {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  border-radius: 1.25rem;
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+}
+
+/* Dashed placeholder box for photo and screenshots */
+.slot {
+  background: var(--slot-bg);
+  border: 1px dashed var(--slot-border);
 }
 
 @media (prefers-reduced-motion: reduce) {
