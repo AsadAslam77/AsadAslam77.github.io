@@ -3,11 +3,13 @@ export const site = {
   title: "Muhammad Asad | Full Stack Developer",
   jobTitle: "Full Stack Developer",
   description:
-    "Full stack developer building Next.js and Firebase web apps, Shopify Hydrogen storefronts and React Native apps. Available for freelance projects and full-time roles.",
+    "Full stack developer building Next.js and Firebase web apps, Shopify storefronts and React Native apps. Available for freelance and full-time work.",
   url: "https://asaddev.me",
   email: "aasadasl77@gmail.com",
   github: "https://github.com/AsadAslam77",
   linkedin: "https://www.linkedin.com/in/asad-fullstack-dev/",
+    cvUrl: "/cv/Muhammad-Asad-CV.pdf",
+  ogImage: "/og.png",
   keywords: [
     "full stack developer",
     "Next.js developer",

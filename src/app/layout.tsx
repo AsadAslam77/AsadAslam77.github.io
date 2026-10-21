@@ -3,6 +3,7 @@ import { site } from "@/content/site";
 import JsonLd from "@/components/seo/JsonLd";
 import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
 import Background from "@/components/layout/Background";
+import MotionProvider from "@/components/motion/MotionProvider";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -60,10 +61,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-           <body className="relative min-h-full flex flex-col">
+                <body className="relative min-h-full flex flex-col">
         <JsonLd />
         <Background />
-        {children}
+        <MotionProvider>{children}</MotionProvider>
       </body>
     </html>
   );
