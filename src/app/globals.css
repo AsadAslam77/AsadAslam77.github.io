@@ -93,3 +93,6 @@ a:hover {
     scroll-behavior: auto;
   }
 }
+.theme-moon { display: none; }
+:root[data-theme="light"] .theme-moon { display: block; }
+:root[data-theme="light"] .theme-sun { display: none; }
