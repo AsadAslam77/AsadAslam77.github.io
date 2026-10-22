@@ -160,3 +160,67 @@ section[id] {
 @media (prefers-reduced-motion: reduce) {
   .fade-up, .fade-soft, .fade-left, .glow-in { animation: none; }
 }
+
+/* Services: timeline rail */
+.rail-dot {
+  position: absolute;
+  left: -38px;
+  top: 28px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid color-mix(in srgb, var(--muted) 55%, transparent);
+  transition: all 0.2s;
+}
+.rail-dot-on {
+  background: var(--highlight);
+  border-color: var(--highlight);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--highlight) 20%, transparent);
+}
+.rail-seg {
+  position: absolute;
+  left: -33px;
+  top: 34px;
+  width: 2px;
+  height: 100%;
+  background: color-mix(in srgb, var(--fg) 14%, transparent);
+}
+.rail-seg-on {
+  background: linear-gradient(var(--highlight), var(--accent));
+}
+
+/* Services: preview frame */
+.gradient-frame {
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent) 70%, transparent),
+    color-mix(in srgb, var(--fg) 8%, transparent) 40%,
+    color-mix(in srgb, var(--highlight) 60%, transparent)
+  );
+}
+.preview-bg {
+  background-color: var(--card-bg);
+  background-image: radial-gradient(color-mix(in srgb, var(--fg) 14%, transparent) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+.preview-glow {
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 22%, transparent), transparent);
+}
+.panel-in {
+  animation: fade-soft 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .panel-in { animation: none; }
+}
+
+/* Services: soft fade when the desktop panel changes */
+@media (min-width: 1024px) {
+  .service-in {
+    animation: fade-soft 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .service-in { animation: none; }
+}

@@ -16,8 +16,8 @@ export default function Home() {
           <Statement />
         </Container>
         <Work />
+        <Services />
         <Container>
-          <Services />
           <Process />
         </Container>
       </main>
