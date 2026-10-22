@@ -37,3 +37,8 @@ export const projects: Project[] = [
     placeholder: "[Screenshot: petnove-weight.png]",
   },
 ];
+
+export const workIntro = {
+  eyebrow: "Selected work",
+  title: "Products I’ve built and shipped.",
+} as const;
