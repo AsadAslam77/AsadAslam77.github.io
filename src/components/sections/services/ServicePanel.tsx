@@ -1,15 +1,8 @@
 import Image from "next/image";
-import Chip from "@/components/ui/Chip";
 import type { Service } from "@/types/service";
 import ServicePreview from "./previews";
 
 const pad = (n: number) => String(n).padStart(2, "0");
-
-const Check = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0 text-accent-soft">
-    <path d="M5 12l5 5 9-10" />
-  </svg>
-);
 
 export default function ServicePanel({
   service: s,
@@ -25,7 +18,7 @@ export default function ServicePanel({
       <p className="font-mono text-xs uppercase tracking-[0.14em] text-muted sm:text-sm">
         {pad(index + 1)} / {pad(total)} · {s.group}
       </p>
-  <h3 className="mb-5 mt-4 break-words font-display text-[40px] font-bold leading-[1.02] tracking-[-0.035em] sm:text-6xl xl:text-[88px]">
+      <h3 className="mb-5 mt-4 break-words font-display text-[40px] font-bold leading-[1.02] tracking-[-0.035em] sm:text-6xl xl:text-[88px]">
         {s.title}
       </h3>
       <p className="mb-7 max-w-[640px] text-lg text-muted sm:text-xl">{s.description}</p>
@@ -59,34 +52,14 @@ export default function ServicePanel({
           </div>
         </div>
       ) : (
-        <ServicePreview kind={s.preview} />
+        <div data-nosnippet>
+          <ServicePreview kind={s.preview} />
+        </div>
       )}
 
-      <div className="mb-7 mt-4 flex justify-between gap-4 font-mono text-xs uppercase tracking-[0.14em] text-muted">
+      <div className="mt-4 flex justify-between gap-4 font-mono text-xs uppercase tracking-[0.14em] text-muted">
         <span>{s.caption[0]}</span>
         <span>{s.caption[1]}</span>
-      </div>
-
-      <div className="grid gap-5 md:grid-cols-2">
-        <div className="glass rounded-3xl p-6">
-          <p className="font-mono text-xs uppercase tracking-[0.14em] text-muted">You get</p>
-          <ul className="mt-3 space-y-3">
-            {s.gets.map((g) => (
-              <li key={g} className="flex items-center gap-3">
-                <Check />
-                {g}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="glass rounded-3xl p-6">
-          <p className="font-mono text-xs uppercase tracking-[0.14em] text-muted">Built with</p>
-          <div className="mt-4 flex flex-wrap gap-2.5">
-            {s.stack.map((t) => (
-              <Chip key={t}>{t}</Chip>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   );
