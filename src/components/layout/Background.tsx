@@ -1,3 +1,6 @@
+const SIZE = 900;
+const grow = (SIZE - 680) / 2;
+
 const blobs = [
   { top: -120, left: -160, color: "var(--blob-green)" },
   { top: 380, right: -220, color: "var(--blob-amber)" },
@@ -8,20 +11,19 @@ const blobs = [
 
 export default function Background() {
   return (
-<div aria-hidden className="glow-in pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+    <div aria-hidden className="glow-in pointer-events-none absolute inset-0 -z-10 overflow-hidden">
       {blobs.map((b, i) => (
         <div
           key={i}
           style={{
             position: "absolute",
-            top: b.top,
-            left: b.left,
-            right: b.right,
-            width: 680,
-            height: 680,
+            top: b.top - grow,
+            left: b.left !== undefined ? b.left - grow : undefined,
+            right: b.right !== undefined ? b.right - grow : undefined,
+            width: SIZE,
+            height: SIZE,
             borderRadius: "50%",
-            background: b.color,
-            filter: "blur(130px)",
+            background: `radial-gradient(closest-side, ${b.color}, transparent)`,
           }}
         />
       ))}

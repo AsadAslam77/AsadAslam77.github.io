@@ -308,3 +308,73 @@ section[id] {
 @media (prefers-reduced-motion: reduce) {
   .svc-panel { transition: none; }
 }
+
+
+/* ---------- Services: motion ---------- */
+@keyframes rise {
+  from { opacity: 0; transform: translate3d(0, 22px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes pop {
+  from { opacity: 0; transform: translate3d(0, 44px, 0) scale(0.96); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+@keyframes ring {
+  0%, 100% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--highlight) 22%, transparent); }
+  50%      { box-shadow: 0 0 0 12px color-mix(in srgb, var(--highlight) 5%, transparent); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .float-slow { animation: float 6s ease-in-out infinite; }
+  .rail-pulse { animation: ring 2.4s ease-in-out infinite; }
+
+  /* Desktop scroll mode: the active service builds in piece by piece */
+  @media (min-width: 1024px) and (min-height: 680px) {
+    /* Wait until the section scrolls into view, so the first reveal isn't missed */
+    .svc-track[data-live="false"] .svc-panel[data-state="active"] > div > * {
+      opacity: 0;
+    }
+    .svc-track[data-live="true"] .svc-panel[data-state="active"] > div > * {
+      animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .svc-track[data-live="true"] .svc-panel[data-state="active"] > div > :nth-child(1) { animation-delay: 0.10s; }
+    .svc-track[data-live="true"] .svc-panel[data-state="active"] > div > :nth-child(2) {
+      animation-name: fade-up;
+      animation-duration: 0.9s;
+      animation-delay: 0.16s;
+    }
+    .svc-track[data-live="true"] .svc-panel[data-state="active"] > div > :nth-child(3) { animation-delay: 0.26s; }
+    .svc-track[data-live="true"] .svc-panel[data-state="active"] > div > :nth-child(4) { animation-delay: 0.34s; }
+    .svc-track[data-live="true"] .svc-panel[data-state="active"] > div > :nth-child(5) {
+      animation-name: pop;
+      animation-duration: 0.9s;
+      animation-delay: 0.42s;
+    }
+    .svc-track[data-live="true"] .svc-panel[data-state="active"] > div > :nth-child(6) { animation-delay: 0.55s; }
+  }
+
+  /* Phones and tablets: each stacked service fades up as it scrolls in */
+  @supports (animation-timeline: view()) {
+    @media not all and (min-width: 1024px) and (min-height: 680px) {
+      .svc-panel {
+        animation: fade-up linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 60%;
+      }
+    }
+  }
+}
+
+/* Lighter blur on phones: backdrop blur is costly on mobile GPUs */
+@media (max-width: 767px) {
+  .glass,
+  .glass-solid,
+  .glass-menu {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}

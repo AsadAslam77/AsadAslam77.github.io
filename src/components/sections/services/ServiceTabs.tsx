@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
   motion,
+  useInView,
   useMotionValueEvent,
   useReducedMotion,
   useScroll,
@@ -25,6 +26,7 @@ export default function ServiceTabs({
   const n = items.length;
   const trackRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
+    const inView = useInView(trackRef, { once: true, margin: "0px 0px -35% 0px" });
   const [active, setActive] = useState(0);
 
   const { scrollYProgress } = useScroll({
@@ -60,7 +62,12 @@ export default function ServiceTabs({
   }
 
   return (
-    <div ref={trackRef} className="svc-track" style={{ "--n": n } as React.CSSProperties}>
+        <div
+      ref={trackRef}
+      data-live={inView ? "true" : "false"}
+      className="svc-track"
+      style={{ "--n": n } as React.CSSProperties}
+    >
       <div className="svc-sticky">
         <div className="svc-grid">
           {/* Rail: desktop scroll mode only */}
@@ -80,7 +87,7 @@ export default function ServiceTabs({
                 className="absolute left-[11px] w-0.5 origin-top bg-gradient-to-b from-highlight to-accent"
                 style={{ top: ITEM_H / 2, height: (n - 1) * ITEM_H, scaleY: fill }}
               />
-              <motion.span
+                           <motion.span
                 aria-hidden
                 className="absolute left-1 h-4 w-4 rounded-full bg-highlight shadow-[0_0_0_7px_color-mix(in_srgb,var(--highlight)_20%,transparent)]"
                 style={{ top: ITEM_H / 2 - 8, y: dotY }}

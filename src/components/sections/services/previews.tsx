@@ -232,7 +232,7 @@ export default function ServicePreview({ kind }: { kind: PreviewKind }) {
     case "store":
       return <PreviewStage browser={<StoreBrowser />} phone={<StorePhone />} />;
 
-    case "mobile":
+       case "mobile":
       return (
         <PreviewFrame
           compact={
@@ -247,10 +247,11 @@ export default function ServicePreview({ kind }: { kind: PreviewKind }) {
             </>
           }
         >
-          <Phone className="absolute left-[170px] top-[84px] -rotate-6 scale-[.92]">
+          {/* Desktop phones: these two get the floating animation */}
+          <Phone className="float-slow absolute left-[170px] top-[84px] -rotate-6 scale-[.92]">
             <AppScreen />
           </Phone>
-          <Phone className="absolute left-[360px] top-[60px] origin-top scale-[1.15]">
+          <Phone className="float-slow absolute left-[360px] top-[60px] origin-top scale-[1.15] [animation-delay:-3s]">
             <AppScreen />
           </Phone>
         </PreviewFrame>
