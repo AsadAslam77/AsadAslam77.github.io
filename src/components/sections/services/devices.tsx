@@ -11,14 +11,11 @@ export function PreviewFrame({
     <div className="relative">
       <div aria-hidden className="preview-glow pointer-events-none absolute inset-x-0 -inset-y-8" />
       <div className="gradient-frame relative rounded-[24px] md:rounded-[28px]">
-        <div className="preview-bg relative h-[360px] overflow-hidden rounded-[23px] md:h-[478px] md:rounded-[27px] lg:h-[411px] xl:h-[520px]">
+        <div className="pv-box preview-bg relative overflow-hidden rounded-[23px] md:rounded-[27px]">
           <div aria-hidden className="md:hidden">
             {compact}
           </div>
-          <div
-            aria-hidden
-            className="absolute left-1/2 top-0 hidden h-[520px] w-[732px] origin-top -translate-x-1/2 md:block md:scale-[.92] lg:scale-[.79] xl:scale-100"
-          >
+          <div aria-hidden className="pv-design">
             {children}
           </div>
           {controls}
@@ -27,7 +24,6 @@ export function PreviewFrame({
     </div>
   );
 }
-
 export function Badge({ children }: { children: React.ReactNode }) {
   return (
     <span className="absolute bottom-3 left-3 z-10 rounded-md border border-[var(--glass-border)] bg-[var(--bg)] px-3 py-2 font-mono text-[11px] tracking-[0.12em] text-fg md:bottom-5 md:left-6 md:text-xs">

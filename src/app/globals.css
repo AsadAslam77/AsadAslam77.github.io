@@ -100,6 +100,8 @@ a:hover {
     scroll-behavior: auto;
   }
 }
+
+/* Theme toggle icons */
 .theme-moon { display: none; }
 :root[data-theme="light"] .theme-moon { display: block; }
 :root[data-theme="light"] .theme-sun { display: none; }
@@ -134,6 +136,7 @@ section[id] {
   box-shadow: var(--card-shadow);
 }
 
+/* ---------- Entrance animations ---------- */
 @keyframes fade-up {
   from { opacity: 0; transform: translate3d(0, 18px, 0); filter: blur(8px); }
   to   { opacity: 1; transform: none; filter: none; }
@@ -161,36 +164,9 @@ section[id] {
   .fade-up, .fade-soft, .fade-left, .glow-in { animation: none; }
 }
 
-/* Services: timeline rail */
-.rail-dot {
-  position: absolute;
-  left: -38px;
-  top: 28px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--bg);
-  border: 2px solid color-mix(in srgb, var(--muted) 55%, transparent);
-  transition: all 0.2s;
-}
-.rail-dot-on {
-  background: var(--highlight);
-  border-color: var(--highlight);
-  box-shadow: 0 0 0 6px color-mix(in srgb, var(--highlight) 20%, transparent);
-}
-.rail-seg {
-  position: absolute;
-  left: -33px;
-  top: 34px;
-  width: 2px;
-  height: 100%;
-  background: color-mix(in srgb, var(--fg) 14%, transparent);
-}
-.rail-seg-on {
-  background: linear-gradient(var(--highlight), var(--accent));
-}
+/* ---------- Services ---------- */
 
-/* Services: preview frame */
+/* Preview frame (gradient border, dotted background, glow) */
 .gradient-frame {
   padding: 1px;
   background: linear-gradient(
@@ -215,12 +191,120 @@ section[id] {
   .panel-in { animation: none; }
 }
 
-/* Services: soft fade when the desktop panel changes */
+/* Timeline nodes on the rail */
+.rail-node {
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid color-mix(in srgb, var(--muted) 55%, transparent);
+  transition: border-color 0.3s;
+}
+.rail-node-on {
+  border-color: var(--accent);
+}
+
+/* Preview frame sizing (the mock is drawn at 732x520 and scaled) */
+.pv-box { height: 360px; }
+.pv-design {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 732px;
+  height: 520px;
+  display: none;
+  transform-origin: top center;
+  translate: -50% 0;
+}
+@media (min-width: 768px) {
+  .pv-box { height: 478px; }
+  .pv-design { display: block; scale: 0.92; }
+}
 @media (min-width: 1024px) {
-  .service-in {
-    animation: fade-soft 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  .pv-box { height: 411px; }
+  .pv-design { scale: 0.79; }
+}
+@media (min-width: 1280px) {
+  .pv-box { height: 520px; }
+  .pv-design { scale: 1; }
+}
+
+/* Service text sizes */
+.svc-title { font-size: 40px; }
+.svc-desc { font-size: 18px; }
+@media (min-width: 640px) {
+  .svc-title { font-size: 60px; }
+  .svc-desc { font-size: 20px; }
+}
+@media (min-width: 1280px) {
+  .svc-title { font-size: 72px; }
+}
+
+/* Stacked layout (phones, tablets, short windows): panels flow with dividers */
+.svc-rail { display: none; }
+.svc-panels > .svc-panel + .svc-panel {
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 1px solid var(--glass-border);
+}
+
+/* Scroll-driven layout: desktop windows at least 680px tall */
+@media (min-width: 1024px) and (min-height: 680px) {
+  .svc-track { height: calc(var(--n) * 80svh + 100svh); }
+  .svc-sticky { position: sticky; top: 104px; height: calc(100svh - 128px); }
+  .svc-grid {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 300px minmax(0, 1fr);
+    gap: 48px;
   }
+  .svc-rail { display: block; align-self: center; }
+  .svc-panels { position: relative; height: 100%; }
+  .svc-panels > .svc-panel + .svc-panel { margin: 0; padding: 0; border: 0; }
+
+  .svc-panel {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 0s linear 0.5s;
+  }
+  .svc-panel[data-state="before"] { transform: translateY(-28px); }
+  .svc-panel[data-state="after"] { transform: translateY(28px); }
+  .svc-panel[data-state="active"] {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0.1s, 0.1s, 0s;
+  }
+
+  /* Everything must fit the screen height, so size by height too */
+  .svc-title { font-size: 48px; }
+  .svc-desc { font-size: 17px; }
+  .pv-box { height: 320px; }
+  .pv-design { scale: 0.62; }
+}
+@media (min-width: 1024px) and (min-height: 840px) {
+  .svc-title { font-size: 56px; }
+  .svc-desc { font-size: 18px; }
+  .pv-box { height: 411px; }
+  .pv-design { scale: 0.79; }
+}
+@media (min-width: 1280px) and (min-height: 680px) {
+  .svc-grid { grid-template-columns: 380px minmax(0, 1fr); gap: 72px; }
+}
+@media (min-width: 1280px) and (min-height: 960px) {
+  .svc-title { font-size: 64px; }
+  .pv-box { height: 520px; }
+  .pv-design { scale: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .service-in { animation: none; }
+  .svc-panel { transition: none; }
 }

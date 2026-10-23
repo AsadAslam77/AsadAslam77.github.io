@@ -40,7 +40,7 @@ export const services: Service[] = [
     group: "Apps",
     description:
       "iOS and Android apps from one codebase, with Firebase for login, data and real-time updates.",
-    delivers: "an app ready for testing and store submission",
+     delivers: "an app ready for store submission",
     gets: [
       "iOS and Android from one codebase",
       "Login and real-time data",
