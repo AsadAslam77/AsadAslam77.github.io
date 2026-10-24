@@ -1,18 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import ThemeToggle from "./ThemeToggle";
 
 const links = [
-  { href: "#work", label: "Work" },
-  { href: "#services", label: "Services" },
-  { href: "#experience", label: "Experience" },
+  { href: "/#work", label: "Work" },
+  { href: "/#services", label: "Services" },
+  { href: "/experience/", label: "Experience" },
   { href: "#contact", label: "Contact" },
 ];
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+  const isActive = (href: string) => href.startsWith("/experience") && pathname.startsWith("/experience");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -35,26 +39,31 @@ export default function Header() {
           scrolled || open ? "glass-solid" : "glass"
         } flex items-center justify-between rounded-full py-2.5 pl-5 pr-3 transition-colors duration-200 md:py-3 md:pl-7 md:pr-4`}
       >
-        <a href="#" className="font-display font-medium !text-fg no-underline">
+        <Link href="/" className="font-display font-medium !text-fg no-underline">
           asaddev.me
-        </a>
+        </Link>
 
         <nav className="hidden gap-7 md:flex" aria-label="Main">
           {links.map((l) => (
-            <a key={l.href} href={l.href} className="!text-fg no-underline hover:!text-highlight">
+            <Link
+              key={l.href}
+              href={l.href}
+              aria-current={isActive(l.href) ? "page" : undefined}
+              className={`no-underline hover:!text-highlight ${isActive(l.href) ? "!text-highlight" : "!text-fg"}`}
+            >
               {l.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
         <div className="flex items-center gap-3">
           <ThemeToggle />
-          <a
+          <Link
             href="#contact"
             className="hidden rounded-full bg-accent px-[22px] py-2.5 font-medium !text-on-accent no-underline sm:inline-block"
           >
             Hire me
-          </a>
+          </Link>
           <button
             onClick={() => setOpen((o) => !o)}
             aria-label={open ? "Close menu" : "Open menu"}
@@ -76,22 +85,23 @@ export default function Header() {
           className="glass-menu absolute inset-x-4 top-full mt-3 flex flex-col gap-1 rounded-3xl p-3 sm:inset-x-6 md:hidden"
         >
           {links.map((l) => (
-            <a
+            <Link
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="rounded-2xl px-4 py-3 !text-fg no-underline hover:bg-ghost"
+              aria-current={isActive(l.href) ? "page" : undefined}
+              className={`rounded-2xl px-4 py-3 no-underline hover:bg-ghost ${isActive(l.href) ? "!text-highlight" : "!text-fg"}`}
             >
               {l.label}
-            </a>
+            </Link>
           ))}
-          <a
+          <Link
             href="#contact"
             onClick={() => setOpen(false)}
             className="mt-1 rounded-full bg-accent px-4 py-3 text-center font-medium !text-on-accent no-underline sm:hidden"
           >
             Hire me
-          </a>
+          </Link>
         </nav>
       )}
     </header>

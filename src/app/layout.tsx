@@ -4,6 +4,8 @@ import JsonLd from "@/components/seo/JsonLd";
 import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
 import Background from "@/components/layout/Background";
 import MotionProvider from "@/components/motion/MotionProvider";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -61,10 +63,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-                <body className="relative min-h-full flex flex-col">
+                 <body className="relative min-h-full flex flex-col">
         <JsonLd />
         <Background />
-        <MotionProvider>{children}</MotionProvider>
+        <MotionProvider>
+          <Header />
+          <div className="flex-1">{children}</div>
+          <Footer />
+        </MotionProvider>
       </body>
     </html>
   );

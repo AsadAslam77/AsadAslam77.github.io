@@ -378,3 +378,24 @@ section[id] {
     -webkit-backdrop-filter: blur(10px);
   }
 }
+
+/* Experience timeline */
+.tl-line {
+  background: linear-gradient(
+    var(--highlight),
+    var(--accent) 45%,
+    color-mix(in srgb, var(--fg) 12%, transparent)
+  );
+}
+.tl-node {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid color-mix(in srgb, var(--muted) 55%, transparent);
+}
+.tl-node-cur {
+  background: var(--highlight);
+  border-color: var(--highlight);
+  box-shadow: 0 0 0 7px color-mix(in srgb, var(--highlight) 20%, transparent);
+}

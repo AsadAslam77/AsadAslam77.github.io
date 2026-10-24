@@ -1,4 +1,4 @@
-import Header from "@/components/layout/Header";
+
 import Container from "@/components/layout/Container";
 import Hero from "@/components/sections/Hero";
 import Statement from "@/components/sections/Statement";
@@ -9,7 +9,7 @@ import Process from "@/components/sections/Process";
 export default function Home() {
   return (
     <>
-      <Header />
+     
       <main>
         <Container>
           <Hero />
