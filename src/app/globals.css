@@ -380,13 +380,7 @@ section[id] {
 }
 
 /* Experience timeline */
-.tl-line {
-  background: linear-gradient(
-    var(--highlight),
-    var(--accent) 45%,
-    color-mix(in srgb, var(--fg) 12%, transparent)
-  );
-}
+
 .tl-node {
   width: 16px;
   height: 16px;
@@ -394,8 +388,17 @@ section[id] {
   background: var(--bg);
   border: 2px solid color-mix(in srgb, var(--muted) 55%, transparent);
 }
-.tl-node-cur {
-  background: var(--highlight);
-  border-color: var(--highlight);
-  box-shadow: 0 0 0 7px color-mix(in srgb, var(--highlight) 20%, transparent);
+
+.tl-base {
+  background: color-mix(in srgb, var(--fg) 12%, transparent);
+}
+.tl-fill {
+  background: linear-gradient(var(--highlight), var(--accent));
+}
+.tl-node {
+  transition: border-color 0.3s, background-color 0.3s;
+}
+.tl-node-on {
+  border-color: var(--accent);
+  background: var(--accent);
 }
