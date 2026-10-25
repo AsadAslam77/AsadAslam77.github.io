@@ -49,7 +49,7 @@ export const timeline: TimelineItem[] = [
       "I work across the whole stack: shaping interfaces, building the backend and getting products live, for a company that ships web, mobile and game projects.",
     highlights: [
       "Build and ship production websites and web apps with Next.js, React and Node.js, from interface to deployment.",
-      "Design and develop the EastWhiz company website, including the service pages, the About page and the content, responsive and SEO-friendly.",
+
       "Use Firebase for authentication, data and Cloud Functions, and connect front ends to REST and GraphQL APIs.",
       "Model and query relational data with PostgreSQL and SQL.",
     ],
