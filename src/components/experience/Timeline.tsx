@@ -37,9 +37,11 @@ export default function Timeline() {
         <TimelineRail />
 
         <ol>
+          {/* One list item per role or school, from content/experience.ts */}
           {timeline.map((item) => (
             <li
               key={item.id}
+              data-tl-item
               className="relative mb-10 pl-8 md:grid md:grid-cols-[150px_48px_minmax(0,1fr)] md:pl-0"
             >
               <p className={dateCls}>
@@ -103,11 +105,15 @@ export default function Timeline() {
             </li>
           ))}
 
-          <li className="relative pl-8 md:grid md:grid-cols-[150px_48px_minmax(0,1fr)] md:pl-0">
+          {/* Last item: "Your project could be next" */}
+          <li
+            data-tl-item
+            className="relative pl-8 md:grid md:grid-cols-[150px_48px_minmax(0,1fr)] md:pl-0"
+          >
             <p className={dateCls}>Next</p>
             <TimelineNode className={nodeCls} />
             <RevealOnView className="min-w-0">
-              <div className="flex flex-wrap items-center justify-between gap-5 rounded-[28px] border border-dashed border-[var(--slot-border)] bg-[var(--slot-bg)] p-6 md:px-8 md:py-7">
+              <div className="tl-next flex flex-wrap items-center justify-between gap-5 rounded-[28px] border border-dashed border-[var(--slot-border)] bg-[var(--slot-bg)] p-6 md:px-8 md:py-7">
                 <div>
                   <p className="font-mono text-xs uppercase tracking-[0.14em] text-muted">{nextChapter.eyebrow}</p>
                   <h3 className="mt-2 font-display text-2xl font-bold">{nextChapter.title}</h3>

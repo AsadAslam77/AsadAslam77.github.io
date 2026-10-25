@@ -395,10 +395,50 @@ section[id] {
 .tl-fill {
   background: linear-gradient(var(--highlight), var(--accent));
 }
+/* Experience timeline: nodes, active card */
 .tl-node {
-  transition: border-color 0.3s, background-color 0.3s;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid color-mix(in srgb, var(--muted) 55%, transparent);
+  box-shadow:
+    inset 0 0 0 0 var(--accent),
+    0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent);
+  transition:
+    box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s;
 }
 .tl-node-on {
   border-color: var(--accent);
-  background: var(--accent);
+  box-shadow:
+    inset 0 0 0 8px var(--accent),
+    0 0 0 6px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+[data-tl-item] .card-solid,
+[data-tl-item] .tl-next {
+  transition:
+    border-color 0.5s,
+    box-shadow 0.6s,
+    background-color 0.5s;
+}
+[data-tl-item][data-on="true"] .card-solid {
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent),
+    0 20px 60px color-mix(in srgb, var(--accent) 14%, transparent);
+}
+[data-tl-item][data-on="true"] .tl-next {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tl-node,
+  [data-tl-item] .card-solid,
+  [data-tl-item] .tl-next {
+    transition: none;
+  }
 }
