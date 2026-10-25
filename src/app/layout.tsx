@@ -55,8 +55,9 @@ const themeScript = `try{var t=localStorage.getItem("theme");if(t)document.docum
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
+   <html
       lang="en"
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} h-full antialiased`}
     >
