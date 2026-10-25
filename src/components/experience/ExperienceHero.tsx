@@ -59,8 +59,8 @@ export default function ExperienceHero() {
               </div>
             ))}
           </dl>
-          <p className="mt-2 flex items-center gap-3 border-t border-[var(--glass-border)] pt-4">
-            <span className="pulse-dot inline-block h-2 w-2 shrink-0 rounded-full bg-accent" />
+                    <p className="mt-2 flex items-start gap-4 border-t border-[var(--glass-border)] pt-4">
+            <span aria-hidden className="glow-node mt-[5px] shrink-0" />
             {h.availability}
           </p>
         </aside>

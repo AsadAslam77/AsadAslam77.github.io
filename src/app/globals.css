@@ -442,3 +442,30 @@ section[id] {
     transition: none;
   }
 }
+/* Glowing node (same look as the timeline nodes) */
+.glow-node {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow:
+    0 0 0 6px color-mix(in srgb, var(--accent) 18%, transparent),
+    0 0 18px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+@keyframes node-ripple {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .glow-node::after {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    animation: node-ripple 2.4s ease-out infinite;
+  }
+}
