@@ -17,6 +17,7 @@
   --slot-border: rgba(255, 255, 255, 0.22);
   --blob-green: rgba(16, 185, 129, 0.38);
   --blob-amber: rgba(251, 191, 36, 0.2);
+    --wordmark: rgba(255, 255, 255, 0.1);
   --card-bg: #0c1e17;
   --card-border: rgba(255, 255, 255, 0.12);
   --card-shadow: 0 -10px 40px rgba(0, 0, 0, 0.35);
@@ -36,6 +37,7 @@
   --glass-border: rgba(255, 255, 255, 0.9);
   --glass-shadow: 0 8px 32px rgba(6, 78, 59, 0.14);
   --ghost-bg: rgba(255, 255, 255, 0.8);
+    --wordmark: rgba(6, 78, 59, 0.16);
   --slot-bg: rgba(8, 21, 15, 0.04);
   --slot-border: rgba(8, 21, 15, 0.22);
   --blob-green: rgba(16, 185, 129, 0.3);

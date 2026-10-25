@@ -4,7 +4,7 @@ import ExperienceHero from "@/components/experience/ExperienceHero";
 import Timeline from "@/components/experience/Timeline";
 import ExperienceProjects from "@/components/experience/ExperienceProjects";
 import SkillsGrid from "@/components/experience/SkillsGrid";
-import ExperienceCta from "@/components/experience/ExperienceCta";
+
 import ExperienceJsonLd from "@/components/seo/ExperienceJsonLd";
 import { experienceMeta } from "@/content/experience";
 import { site } from "@/content/site";
@@ -42,7 +42,7 @@ export default function ExperiencePage() {
           <Timeline />
           <ExperienceProjects />
           <SkillsGrid />
-          <ExperienceCta />
+         
         </Container>
       </main>
     </>
