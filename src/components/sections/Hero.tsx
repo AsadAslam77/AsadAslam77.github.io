@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import Chip from "@/components/ui/Chip";
 import { hero } from "@/content/hero";
 import { site } from "@/content/site";
-
+import Image from "next/image";
 const stackRows = [hero.stack.slice(0, 3), hero.stack.slice(3)];
 const delay = (s: number) => ({ animationDelay: `${s}s` });
 
@@ -58,9 +58,14 @@ export default function Hero() {
         style={delay(0.3)}
       >
         {/* Replace with next/image (add the priority prop) once your photo exists */}
-        <div className="slot flex h-[132px] w-[132px] items-center justify-center rounded-full px-3 text-sm text-muted">
-          [Your photo]
-        </div>
+        <Image
+          src={hero.photo.src}
+          alt={hero.photo.alt}
+          width={132}
+          height={132}
+          priority
+          className="h-[132px] w-[132px] shrink-0 rounded-full border border-[var(--glass-border)] object-cover object-[50%_25%]"
+        />
         <div>
           <p className="font-display text-[22px] font-medium">{site.name}</p>
           <p className="text-muted">{site.jobTitle}</p>
