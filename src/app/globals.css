@@ -1,0 +1,473 @@
+@import "tailwindcss";
+
+/* Dark theme (default) */
+:root {
+  --bg: #06100d;
+  --fg: #f4fbf7;
+  --muted: #9db0a6;
+  --accent: #34d399;        /* buttons, dots */
+  --accent-soft: #6ee7b7;   /* links, step numbers */
+  --highlight: #fcd34d;     /* amber: subtitle, link hover */
+  --on-accent: #06100d;     /* text on green buttons */
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  --ghost-bg: rgba(255, 255, 255, 0.12);
+  --slot-bg: rgba(255, 255, 255, 0.04);
+  --slot-border: rgba(255, 255, 255, 0.22);
+  --blob-green: rgba(16, 185, 129, 0.38);
+  --blob-amber: rgba(251, 191, 36, 0.2);
+    --wordmark: rgba(255, 255, 255, 0.1);
+  --card-bg: #0c1e17;
+  --card-border: rgba(255, 255, 255, 0.12);
+  --card-shadow: 0 -10px 40px rgba(0, 0, 0, 0.35);
+  color-scheme: dark;
+}
+
+/* Light theme */
+:root[data-theme="light"] {
+  --bg: #f2f7f4;
+  --fg: #08150f;
+  --muted: #4b5f55;
+  --accent: #10b981;
+  --accent-soft: #047857;
+  --highlight: #d89c1b;
+  --on-accent: #08150f;
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.9);
+  --glass-shadow: 0 8px 32px rgba(6, 78, 59, 0.14);
+  --ghost-bg: rgba(255, 255, 255, 0.8);
+    --wordmark: rgba(6, 78, 59, 0.16);
+  --slot-bg: rgba(8, 21, 15, 0.04);
+  --slot-border: rgba(8, 21, 15, 0.22);
+  --blob-green: rgba(16, 185, 129, 0.3);
+  --blob-amber: rgba(245, 158, 11, 0.25);
+  --card-bg: #ffffff;
+  --card-border: rgba(6, 78, 59, 0.12);
+  --card-shadow: 0 -10px 40px rgba(6, 78, 59, 0.12);
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-highlight: var(--highlight);
+  --color-on-accent: var(--on-accent);
+  --color-ghost: var(--ghost-bg);
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a {
+  color: var(--accent-soft);
+}
+a:hover {
+  color: var(--highlight);
+}
+
+/* Glass surface. Set the radius per element (rounded-3xl, rounded-full, etc.) */
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+}
+
+/* Dashed placeholder box for photo and screenshots */
+.slot {
+  background: var(--slot-bg);
+  border: 1px dashed var(--slot-border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Theme toggle icons */
+.theme-moon { display: none; }
+:root[data-theme="light"] .theme-moon { display: block; }
+:root[data-theme="light"] .theme-sun { display: none; }
+
+/* Header after scrolling: more opaque so content doesn't show through */
+.glass-solid {
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+}
+
+/* Mobile menu panel: almost opaque */
+.glass-menu {
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+}
+
+/* So the sticky header doesn't cover section titles when jumping to #work etc. */
+section[id] {
+  scroll-margin-top: 110px;
+}
+
+/* Opaque card for the stacking project cards */
+.card-solid {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+}
+
+/* ---------- Entrance animations ---------- */
+@keyframes fade-up {
+  from { opacity: 0; transform: translate3d(0, 18px, 0); filter: blur(8px); }
+  to   { opacity: 1; transform: none; filter: none; }
+}
+/* For glass elements: no blur, so the frosted effect stays intact */
+@keyframes fade-soft {
+  from { opacity: 0; transform: translate3d(0, 14px, 0) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes fade-left {
+  from { opacity: 0; transform: translate3d(36px, 0, 0) scale(0.98); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes glow-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.fade-up   { animation: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.fade-soft { animation: fade-soft 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.fade-left { animation: fade-left 1s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.glow-in   { animation: glow-in 1.8s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-up, .fade-soft, .fade-left, .glow-in { animation: none; }
+}
+
+/* ---------- Services ---------- */
+
+/* Preview frame (gradient border, dotted background, glow) */
+.gradient-frame {
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent) 70%, transparent),
+    color-mix(in srgb, var(--fg) 8%, transparent) 40%,
+    color-mix(in srgb, var(--highlight) 60%, transparent)
+  );
+}
+.preview-bg {
+  background-color: var(--card-bg);
+  background-image: radial-gradient(color-mix(in srgb, var(--fg) 14%, transparent) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+.preview-glow {
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 22%, transparent), transparent);
+}
+.panel-in {
+  animation: fade-soft 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .panel-in { animation: none; }
+}
+
+/* Timeline nodes on the rail */
+.rail-node {
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid color-mix(in srgb, var(--muted) 55%, transparent);
+  transition: border-color 0.3s;
+}
+.rail-node-on {
+  border-color: var(--accent);
+}
+
+/* Preview frame sizing (the mock is drawn at 732x520 and scaled) */
+.pv-box { height: 360px; }
+.pv-design {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 732px;
+  height: 520px;
+  display: none;
+  transform-origin: top center;
+  translate: -50% 0;
+}
+@media (min-width: 768px) {
+  .pv-box { height: 478px; }
+  .pv-design { display: block; scale: 0.92; }
+}
+@media (min-width: 1024px) {
+  .pv-box { height: 411px; }
+  .pv-design { scale: 0.79; }
+}
+@media (min-width: 1280px) {
+  .pv-box { height: 520px; }
+  .pv-design { scale: 1; }
+}
+
+/* Service text sizes */
+.svc-title { font-size: 40px; }
+.svc-desc { font-size: 18px; }
+@media (min-width: 640px) {
+  .svc-title { font-size: 60px; }
+  .svc-desc { font-size: 20px; }
+}
+@media (min-width: 1280px) {
+  .svc-title { font-size: 72px; }
+}
+
+/* Stacked layout (phones, tablets, short windows): panels flow with dividers */
+.svc-rail { display: none; }
+.svc-panels > .svc-panel + .svc-panel {
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 1px solid var(--glass-border);
+}
+
+/* Scroll-driven layout: desktop windows at least 680px tall */
+@media (min-width: 1024px) and (min-height: 680px) {
+  .svc-track { height: calc(var(--n) * 80svh + 100svh); }
+  .svc-sticky { position: sticky; top: 104px; height: calc(100svh - 128px); }
+  .svc-grid {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 300px minmax(0, 1fr);
+    gap: 48px;
+  }
+  .svc-rail { display: block; align-self: center; }
+  .svc-panels { position: relative; height: 100%; }
+  .svc-panels > .svc-panel + .svc-panel { margin: 0; padding: 0; border: 0; }
+
+  .svc-panel {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 0s linear 0.5s;
+  }
+  .svc-panel[data-state="before"] { transform: translateY(-28px); }
+  .svc-panel[data-state="after"] { transform: translateY(28px); }
+  .svc-panel[data-state="active"] {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0.1s, 0.1s, 0s;
+  }
+
+  /* Everything must fit the screen height, so size by height too */
+  .svc-title { font-size: 48px; }
+  .svc-desc { font-size: 17px; }
+  .pv-box { height: 320px; }
+  .pv-design { scale: 0.62; }
+}
+@media (min-width: 1024px) and (min-height: 840px) {
+  .svc-title { font-size: 56px; }
+  .svc-desc { font-size: 18px; }
+  .pv-box { height: 411px; }
+  .pv-design { scale: 0.79; }
+}
+@media (min-width: 1280px) and (min-height: 680px) {
+  .svc-grid { grid-template-columns: 380px minmax(0, 1fr); gap: 72px; }
+}
+@media (min-width: 1280px) and (min-height: 960px) {
+  .svc-title { font-size: 64px; }
+  .pv-box { height: 520px; }
+  .pv-design { scale: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .svc-panel { transition: none; }
+}
+
+
+/* ---------- Services: motion ---------- */
+@keyframes rise {
+  from { opacity: 0; transform: translate3d(0, 22px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes pop {
+  from { opacity: 0; transform: translate3d(0, 44px, 0) scale(0.96); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+@keyframes ring {
+  0%, 100% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--highlight) 22%, transparent); }
+  50%      { box-shadow: 0 0 0 12px color-mix(in srgb, var(--highlight) 5%, transparent); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .float-slow { animation: float 6s ease-in-out infinite; }
+  .rail-pulse { animation: ring 2.4s ease-in-out infinite; }
+
+  /* Desktop scroll mode: the active service builds in piece by piece */
+  @media (min-width: 1024px) and (min-height: 680px) {
+    /* Wait until the section scrolls into view, so the first reveal isn't missed */
+    .svc-track[data-live="false"] .svc-panel[data-state="active"] > div > * {
+      opacity: 0;
+    }
+    .svc-track[data-live="true"] .svc-panel[data-state="active"] > div > * {
+      animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .svc-track[data-live="true"] .svc-panel[data-state="active"] > div > :nth-child(1) { animation-delay: 0.10s; }
+    .svc-track[data-live="true"] .svc-panel[data-state="active"] > div > :nth-child(2) {
+      animation-name: fade-up;
+      animation-duration: 0.9s;
+      animation-delay: 0.16s;
+    }
+    .svc-track[data-live="true"] .svc-panel[data-state="active"] > div > :nth-child(3) { animation-delay: 0.26s; }
+    .svc-track[data-live="true"] .svc-panel[data-state="active"] > div > :nth-child(4) { animation-delay: 0.34s; }
+    .svc-track[data-live="true"] .svc-panel[data-state="active"] > div > :nth-child(5) {
+      animation-name: pop;
+      animation-duration: 0.9s;
+      animation-delay: 0.42s;
+    }
+    .svc-track[data-live="true"] .svc-panel[data-state="active"] > div > :nth-child(6) { animation-delay: 0.55s; }
+  }
+
+  /* Phones and tablets: each stacked service fades up as it scrolls in */
+  @supports (animation-timeline: view()) {
+    @media not all and (min-width: 1024px) and (min-height: 680px) {
+      .svc-panel {
+        animation: fade-up linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 60%;
+      }
+    }
+  }
+}
+
+/* Lighter blur on phones: backdrop blur is costly on mobile GPUs */
+@media (max-width: 767px) {
+  .glass,
+  .glass-solid,
+  .glass-menu {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+/* Experience timeline */
+
+.tl-node {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid color-mix(in srgb, var(--muted) 55%, transparent);
+}
+
+.tl-base {
+  background: color-mix(in srgb, var(--fg) 12%, transparent);
+}
+.tl-fill {
+  background: linear-gradient(var(--highlight), var(--accent));
+}
+/* Experience timeline: nodes, active card */
+.tl-node {
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid color-mix(in srgb, var(--muted) 55%, transparent);
+  box-shadow:
+    inset 0 0 0 0 var(--accent),
+    0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent);
+  transition:
+    box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s;
+}
+.tl-node-on {
+  border-color: var(--accent);
+  box-shadow:
+    inset 0 0 0 8px var(--accent),
+    0 0 0 6px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+[data-tl-item] .card-solid,
+[data-tl-item] .tl-next {
+  transition:
+    border-color 0.5s,
+    box-shadow 0.6s,
+    background-color 0.5s;
+}
+[data-tl-item][data-on="true"] .card-solid {
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent),
+    0 20px 60px color-mix(in srgb, var(--accent) 14%, transparent);
+}
+[data-tl-item][data-on="true"] .tl-next {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tl-node,
+  [data-tl-item] .card-solid,
+  [data-tl-item] .tl-next {
+    transition: none;
+  }
+}
+/* Glowing node (same look as the timeline nodes) */
+.glow-node {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow:
+    0 0 0 6px color-mix(in srgb, var(--accent) 18%, transparent),
+    0 0 18px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+@keyframes node-ripple {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .glow-node::after {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    animation: node-ripple 2.4s ease-out infinite;
+  }
+}
